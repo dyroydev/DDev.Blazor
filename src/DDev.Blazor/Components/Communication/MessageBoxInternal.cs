@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
-
-namespace DDev.Blazor.Components.Communication;
+﻿namespace DDev.Blazor.Components.Communication;
 
 internal class MessageBoxInternal : ComponentBase
 {

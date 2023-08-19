@@ -1,6 +1,9 @@
 ﻿namespace DDev.Blazor.Components;
 
-public partial class DDevBlazor
+/// <summary>
+/// Main entry point for DDev Blazor. Must be added to top of &lt;App/&gt; component.
+/// </summary>
+public partial class UseDDevBlazor
 {
     /// <summary>
     /// Renders an internal component.
