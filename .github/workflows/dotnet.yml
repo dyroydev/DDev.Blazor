@@ -35,4 +35,4 @@ jobs:
       
     - name: Publish package
       working-directory: ./src
-      run: dotnet nuget push ./DDev.Blazor/bin/Release/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/dyroydev/index.json"
+      run: dotnet nuget push ./DDev.Blazor/bin/Release/*.nupkg --api-key ${{ secrets.NUGET_TOKEN }} --source "https://nuget.pkg.github.com/dyroydev/index.json"
