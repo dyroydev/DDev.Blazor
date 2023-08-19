@@ -1,11 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+	  <PackageId>DDev.Blazor</PackageId>
+	  <Version>0.0.1</Version>
+	  <Authors>Mats Dyrøy</Authors>
+	  <Company>Dyroy Development</Company>
+  </PropertyGroup>	
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
