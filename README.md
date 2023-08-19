@@ -1,18 +1,21 @@
-# Ddev.Blazor
-Common UI components and utilities for blazor applications.
+# DDev.Blazor
+Common UI components and utilities for blazor applications intended for use by DyroyDev.  
 
 ## Setup
-1. Add DDev NuGet source.
-1. Add `ddev.blazor` NuGet package.
-1. Add `DDevBlazor` component to top of `App.razor`.
+1. Add NuGet source `https://nuget.pkg.github.com/dyroydev/index.json`.
+1. Add NuGet package `DDev.Blazor`.
+1. Add `DDev.Blazor.Components.DDevBlazor` component to top of `App.razor`.
+All done!
 
 ## Roadmap
-1. More documentation
-1. Better documentation
-1. Examples in documentation
-1. Demo application
 
-### Components
+### Improved documentation
+- [ ] Document all public APIs
+- [ ] Hosted documentation page
+- [ ] Example usage for all components and utilities
+- [ ] Demo-project to test new stuff.
+
+### New components
 - [ ] `ContextMenu`
 - [ ] `TextField`
 - [ ] `NumberField`
