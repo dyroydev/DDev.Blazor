@@ -1,0 +1,7 @@
+<button class="tab" @onclick="HandleClick" selected="@(TabSet?.Tab == this)" icon="@(string.IsNullOrWhiteSpace(Icon) is false)">
+
+    <Icon Name="@Icon" />
+
+    <span>@Title</span>
+
+</button>

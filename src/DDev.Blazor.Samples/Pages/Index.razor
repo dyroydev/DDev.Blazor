@@ -1,0 +1,13 @@
+﻿@page "/"
+
+<Button OnClick="() => _sheet!.ShowAsync()">Show</Button>
+
+<BottomSheet @ref="_sheet">
+
+    This is a test
+
+</BottomSheet>
+
+@code {
+    BottomSheet? _sheet;
+}

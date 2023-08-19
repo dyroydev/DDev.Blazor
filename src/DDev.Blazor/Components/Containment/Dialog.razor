@@ -1,0 +1,46 @@
+<Backdrop @ref="_backdrop" OnFocusOutTop="HandleFocusOutTop" OnFocusOut="HandleFocusOutBottom" OnClick="HandleBackdropClick">
+
+    <CascadingValue Value="this" IsFixed>
+
+        <article role="dialog" class="dialog" id="@_id" @onclick:stopPropagation>
+
+            @if (Header is not null)
+            {
+                <section class="dialog__header">
+
+                    @Header?.Invoke(this)
+
+                </section>
+            }
+
+
+            <section class="dialog__content">
+
+                @Content?.Invoke(this)
+
+            </section>
+
+            @if (Actions is not null || SecondaryActions is not null)
+            {
+                <section class="dialog__actions">
+
+                    <section>
+
+                        @SecondaryActions?.Invoke(this)
+
+                    </section>
+
+                    <section>
+
+                        @Actions?.Invoke(this)
+
+                    </section>
+
+                </section>
+            }
+
+        </article>
+
+    </CascadingValue>
+
+</Backdrop>

@@ -1,0 +1,43 @@
+<Backdrop @ref="_backdrop" OnClick="Close">
+
+    <div class="side-sheet" @onclick:stopPropagation>
+
+        <div class="side-sheet__header">
+
+            @if (string.IsNullOrWhiteSpace(Icon) is false)
+            {
+                <IconButton Icon="@Icon" Tooltip="@IconTooltip" OnClick="@OnClickIcon" />
+            }
+            else
+            {
+                <div this_is_a_placeholder></div>
+            }
+
+            <div class="side-sheet__title">@Title</div>
+
+            <IconButton Icon="close" OnClick="Close" />
+
+        </div>
+
+        <div class="side-sheet__content">
+
+            @Content
+
+        </div>
+
+        @if (Actions is not null)
+        {
+
+            <div class="side-sheet__actions">
+
+                <!-- Kept around in case I want to add SecondaryActions like in the Dialog component. -->
+                <section></section>
+
+                <section>@Actions</section>
+
+            </div>
+        }
+
+    </div>
+
+</Backdrop>

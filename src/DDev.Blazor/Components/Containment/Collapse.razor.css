@@ -1,0 +1,25 @@
+﻿.collapse {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows;
+    transition-duration: 200ms;
+}
+
+.collapse__content {
+    overflow: hidden;
+}
+
+.collapse[expanded] {
+    grid-template-rows: 1fr;
+}
+
+.collapse[inline] {
+    display: inline-grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 0fr;
+    transition-property: grid-template-columns;
+}
+
+.collapse[inline][expanded] {
+    grid-template-columns: 1fr;
+}

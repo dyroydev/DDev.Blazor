@@ -1,0 +1,11 @@
+<IconButton Icon="@Icon" Id="@Id" OnClick="ShowAsync" />
+
+<Popup @ref="_popup" VisibilityChanged="HandleVisibilityChanged">
+    
+    <Menu @ref="_menu" OnClick="CloseAsync">
+
+        @ChildContent
+
+    </Menu>
+
+</Popup>

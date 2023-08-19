@@ -1,0 +1,18 @@
+﻿.bottom-sheet {
+    position: absolute;
+    bottom: 0;
+    padding: 16px;
+    min-height: 256px;
+    width: 100%;
+    background-color: var(--surface);
+    border-radius: 0;
+    border-top-left-radius: var(--container-radius);
+    border-top-right-radius: var(--container-radius);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    transform: translateY(0);
+    transition: transform 200ms ease-in-out;
+}
+
+.backdrop[inert] .bottom-sheet {
+    transform: translateY(100%);
+}

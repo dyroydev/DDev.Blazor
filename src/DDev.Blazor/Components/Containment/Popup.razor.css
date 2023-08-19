@@ -1,0 +1,21 @@
+﻿.popup {
+    position: fixed;
+    left: var(--x);
+    top: var(--y);
+    z-index: 300;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.popup[visible] {
+    opacity: 1;
+    pointer-events: inherit;
+}
+
+.popup[full-x] {
+    left: 0;
+}
+
+.popup[full-y] {
+    top: 0;
+}

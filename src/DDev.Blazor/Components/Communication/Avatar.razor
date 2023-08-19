@@ -1,0 +1,25 @@
+<div 
+    class="avatar" 
+    style="--color:@(_color); --size:@(_size)" 
+    @onclick="OnClick" 
+    @onclick:stopPropagation="OnClick.HasDelegate" 
+    action="@OnClick.HasDelegate" 
+    tabindex="@(OnClick.HasDelegate ? "0" : null)"
+    title="@_tooltip">
+
+    @if (string.IsNullOrWhiteSpace(ImageUrl))
+    {
+        <div class="avatar__initials">@_initials</div>
+    }
+    else
+    {
+        <img class="avatar__image" src="@ImageUrl" alt="@(Name ?? Initials)" />
+    }
+
+    @if (_hasStatus)
+    {
+        <div class="avatar__status" style="background-color:@StatusColor" title="@StatusTooltip">
+            <Icon Name="@StatusIcon" Size="200%" />
+        </div>
+    }
+</div>

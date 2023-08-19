@@ -1,0 +1,56 @@
+﻿button {
+    appearance: none;
+    background-color: var(--surface);
+    font: inherit;
+    border: 1px solid lightgray;
+    height: 40px;
+    padding: 0 11px;
+    border-radius: var(--component-radius);
+    color: var(--primary);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+}
+
+button > span {
+    padding: 0 8px;
+}
+
+button:focus,
+button:hover {
+    outline: none;
+    background-color: color-mix(in srgb, currentColor 5%, var(--surface));
+}
+button[aria-selected="true"],
+button:active {
+    background-color: color-mix(in srgb, currentColor 10%, var(--surface));
+}
+
+button[disabled] {
+    cursor: inherit;
+    color: var(--on-disabled);
+    background-color: color-mix(in srgb, currentColor 5%, var(--surface));
+}
+
+button[primary] {
+    color: var(--on-primary);
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+button[primary]:focus,
+button[primary]:hover {
+    background-color: color-mix(in srgb, var(--primary) 70%, currentColor);
+    border-color: color-mix(in srgb, var(--primary) 70%, currentColor);
+}
+
+button[primary]:active {
+    background-color: color-mix(in srgb, var(--primary) 50%, currentColor);
+    border-color: color-mix(in srgb, var(--primary) 50%, currentColor);
+}
+
+button[primary][disabled] {
+    color: var(--on-disabled);
+    background-color: lightgray;
+    border-color: lightgray;
+}

@@ -1,0 +1,6 @@
+@if (string.IsNullOrWhiteSpace(Name) is false)
+{
+    <span class="icon material-symbols-rounded" title="@Tooltip" @onclick:stopPropagation="OnClick.HasDelegate" @onclick="OnClick" style="font-size:@Size">
+        @Name
+    </span>
+}

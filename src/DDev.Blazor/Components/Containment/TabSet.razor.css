@@ -1,0 +1,12 @@
+﻿.tab-set {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto, 1fr;
+}
+
+.tab-set__tabs {
+    display: flex;
+    justify-content: start;
+    align-items: end;
+    overflow-y: auto;
+}

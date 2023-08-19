@@ -1,0 +1,14 @@
+<PortalSource Name="@(nameof(Backdrop))">
+
+    <div class="backdrop" inert="@(!_isOpen)" @onclick="HandleClick" @onfocusout="HandleFocusOut">
+
+        <div tabindex="0" @onfocus="HandleFocusTop"></div>
+
+        @ChildContent
+
+
+        <div tabindex="0" @onfocus="HandleFocusBottom"></div>
+
+    </div>
+
+</PortalSource>

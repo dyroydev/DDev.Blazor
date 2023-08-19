@@ -1,0 +1,16 @@
+<button
+    @onclick:stopPropagation
+    @onclick="OnClick"
+    type="button"
+    primary="@Primary"
+    disabled="@Disabled"
+    title="@Tooltip"
+    id="@Id"
+    class="button"
+    aria-selected="@Aria.Selected(Selected)">
+
+    <Icon Name="@Icon" />
+
+    <span>@ChildContent</span>
+
+</button>

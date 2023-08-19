@@ -1,0 +1,54 @@
+﻿.tab {
+    height: 40px;
+    min-width: 124px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    appearance: none;
+    border: 0;
+    font: inherit;
+    background-color: transparent;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    font-size: 14px;
+    outline: none;
+    transition: color, background-color;
+    transition-duration: 200ms;
+    transition-timing-function: ease-out;
+}
+
+.tab:hover,
+.tab:focus-visible {
+    background-color: color-mix(in srgb, var(--on-surface) 10%, transparent);
+}
+
+.tab:active {
+    background-color: color-mix(in srgb, var(--on-surface) 15%, transparent);
+}
+
+.tab::after {
+    content: "";
+    position: absolute;
+    height: 4px;
+    width: 40%;
+    bottom: 0;
+    left: 50%;
+    background-color: var(--primary);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    transform: translateY(100%) translateX(-50%);
+    transition: transform 200ms ease-out;
+}
+
+.tab[icon] {
+    height: 56px;
+}
+
+.tab[selected] {
+    color: var(--primary);
+}
+.tab[selected]::after {
+    transform: translateY(0) translateX(-50%);
+}

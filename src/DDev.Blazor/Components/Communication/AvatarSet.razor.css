@@ -1,0 +1,39 @@
+﻿div {
+    display: flex;
+    --overlap: -16px;
+}
+
+::deep .avatar {
+    position: relative;
+}
+
+::deep .avatar:nth-child(1) {
+    left: calc(var(--overlap) * 0);
+}
+::deep .avatar:nth-child(2) {
+    left: calc(var(--overlap) * 1);
+}
+::deep .avatar:nth-child(3) {
+    left: calc(var(--overlap) * 2);
+}
+::deep .avatar:nth-child(4) {
+    left: calc(var(--overlap) * 3);
+}
+::deep .avatar:nth-child(5) {
+    left: calc(var(--overlap) * 4);
+}
+::deep .avatar:nth-child(6) {
+    left: calc(var(--overlap) * 5);
+}
+::deep .avatar:nth-child(7) {
+    left: calc(var(--overlap) * 6);
+}
+::deep .avatar:nth-child(8) {
+    left: calc(var(--overlap) * 7);
+}
+::deep .avatar:nth-child(9) {
+    left: calc(var(--overlap) * 8);
+}
+::deep .avatar:nth-child(10) {
+    left: calc(var(--overlap) * 9);
+}

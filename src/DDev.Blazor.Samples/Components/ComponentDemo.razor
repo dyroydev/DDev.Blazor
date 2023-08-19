@@ -1,0 +1,12 @@
+﻿<article>
+    <h3>@ComponentType?.Name</h3>
+    <section>
+        @ChildContent
+    </section>
+</article>
+
+@code {
+    [Parameter, EditorRequired] public Type? ComponentType { get; set; }
+
+    [Parameter, EditorRequired] public RenderFragment? ChildContent { get; set; }
+}

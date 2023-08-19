@@ -1,0 +1,29 @@
+<style>
+    .material-symbols-rounded {
+        font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+    }
+
+    :root {
+        --primary: #5959f7;
+        --on-primary: white;
+        --surface: white;
+        --on-surface: #222;
+        --disabled: lightgray;
+        --on-disabled: gray;
+        --component-radius: 8px;
+        --container-radius: 16px;
+        --font: sans-serif;
+        --font-title: var(--font);
+
+    }
+
+    body {
+        color: var(--on-surface);
+        background-color: var(--surface);
+        font-family: var(--font);
+    }
+</style>
+
+<PortalOutlet Name="@(nameof(Backdrop))" />
+
+@(UseInternal<MessageBoxInternal>())

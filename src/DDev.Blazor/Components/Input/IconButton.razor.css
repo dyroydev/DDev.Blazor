@@ -1,0 +1,51 @@
+﻿button {
+    appearance: none;
+    border: none;
+    padding: 0;
+    background-color: transparent;
+    width: 40px;
+    height: 40px;
+    display: inline-grid;
+    place-items: center;
+    color: var(--on-surface);
+    border-radius: 100vw;
+    position: relative;
+    cursor: pointer;
+}
+
+::deep span {
+    display: block;
+    position: absolute;
+    width: 24px;
+    height: 24px;
+}
+
+button::before {
+    content: "";
+    width: inherit;
+    height: inherit;
+    border-radius: inherit;
+    position: absolute;
+    background-color: currentColor;
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity, transform;
+    transition-duration: 150ms;
+}
+
+button[disabled]::before,
+button:focus::before,
+button:hover::before {
+    outline: none;
+    opacity: 0.1;
+    transform: scale(1);
+}
+
+button:active::before {
+    opacity: 0.2;
+}
+
+button[disabled] {
+    color: var(--on-disabled);
+    cursor: inherit;
+}

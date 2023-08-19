@@ -1,0 +1,45 @@
+﻿.avatar {
+    --size: 40px;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 100vw;
+    user-select: none;
+    position: relative;
+    color: var(--on-primary);
+}
+
+.avatar[action] {
+    cursor: pointer;
+}
+
+.avatar__initials {
+    width: inherit;
+    height: inherit;
+    border-radius: inherit;
+    display: grid;
+    place-items: center;
+    background-color: var(--color);
+}
+
+.avatar__image {
+    width: inherit;
+    height: inherit;
+    border-radius: inherit;
+}
+
+.avatar__status {
+    position: absolute;
+    width: 30%;
+    height: 30%;
+    bottom: 0;
+    right: 0;
+    border-radius: inherit;
+    font-size: 0.3em;
+    display: grid;
+    place-items: center;
+}
+.avatar:has(.avatar__status) .avatar__initials,
+.avatar:has(.avatar__status) .avatar__image {
+    -webkit-mask-image: radial-gradient(circle at 84% 84%, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 1) 20%);
+    mask-image: radial-gradient(circle at 84% 84%, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 1) 20%);
+}

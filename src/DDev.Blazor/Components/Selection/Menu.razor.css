@@ -1,0 +1,14 @@
+﻿.menu {
+    margin: 0;
+    padding: 8px 0;
+    border: 1px solid var(--disabled);
+    border-radius: var(--component-radius);
+    background-color: color-mix(in srgb, var(--primary) 5%, var(--surface));
+    white-space: nowrap;
+}
+
+::deep > hr {
+    border: 0;
+    height: 1px;
+    background-color: var(--disabled);
+}
