@@ -1,11 +1,1 @@
-<IconButton Icon="@Icon" Id="@Id" OnClick="ShowAsync" />
-
-<Popup @ref="_popup" VisibilityChanged="HandleVisibilityChanged">
-    
-    <Menu @ref="_menu" OnClick="CloseAsync">
-
-        @ChildContent
-
-    </Menu>
-
-</Popup>
+<TemplatePopupMenu @ref="_popupMenu" T="object" ChildContent="_ => ChildContent!" VisibleChanged="VisibleChanged" PlacementWidth="PlacementWidth" OnClickOption="OnClickOption" />

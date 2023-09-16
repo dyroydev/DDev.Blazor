@@ -1,0 +1,11 @@
+@typeparam T
+
+<Popup @ref="_popup" VisibleChanged="VisibleChanged" PlacementWidth="PlacementWidth">
+
+    <Menu @ref="_menu" OnClick="CloseAsync" OnClickOption="OnClickOption" OnKeyDown="HandleKeyDown">
+
+        @ChildContent?.Invoke(_context!)
+
+    </Menu>
+
+</Popup>

@@ -1,0 +1,31 @@
+﻿.color-picker {
+    display: grid;
+    --size: 1.5em;
+    grid-template-columns: repeat(auto-fill, var(--size));
+    place-items: center;
+    gap: 8px;
+    padding: 8px;
+}
+
+.color-picker__color {
+    display: grid;
+    place-items: center;
+    border-radius: 100%;
+    width: var(--size);
+    height: var(--size);
+    box-sizing: border-box;
+    border: 2px solid transparent;
+}
+
+.color-picker__color::after {
+    display: block;
+    content: "";
+    background-color: currentColor;
+    width: calc(var(--size) - 4px);
+    height: calc(var(--size) - 4px);
+    border-radius: inherit;
+}
+
+.color-picker__color[aria-selected="true"] {
+    border: 2px solid var(--primary);
+}

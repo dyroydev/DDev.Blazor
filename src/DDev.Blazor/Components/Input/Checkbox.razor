@@ -1,0 +1,9 @@
+@inherits FieldBase<bool>
+
+<label for="@Id">
+    <input type="checkbox" checked="@Value" id="@Id" disabled="@Disabled" />
+    @if (string.IsNullOrWhiteSpace(Label) is false)
+    {
+        <span>@Label</span>
+    }
+</label>

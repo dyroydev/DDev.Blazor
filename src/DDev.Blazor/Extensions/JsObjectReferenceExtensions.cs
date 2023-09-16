@@ -34,6 +34,8 @@ internal static class JsObjectReferenceExtensions
             if (_disposed)
                 return;
 
+            _disposed = true;
+
             try
             {
                 await _jsObject.InvokeVoidAsync("dispose");

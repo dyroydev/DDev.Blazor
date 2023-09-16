@@ -1,0 +1,7 @@
+@typeparam T
+@foreach (var item in Source)
+{
+    <Option @key="item" ChildContent="ChildContent(item)" Disabled="Disabled(item)" Hint="@Hint(item)" HintIcon="@HintIcon(item)" Icon="@Icon(item)" Value="item" 
+        OnClick="GetCallback(OnClick, item)"
+        OnClickHint="GetCallback(OnClickHint, item)"/>
+}

@@ -1,0 +1,5 @@
+@inherits FieldBase<string>
+
+<FieldTemplate Empty="string.IsNullOrEmpty(Value)" Disabled="Disabled" Label="@Label" ValueId="@Id">
+    <input class="text-field__value" type="text" id="@Id" @bind="Value" @bind:event="input" disabled="@Disabled" placeholder="@Placeholder" autocomplete="off" inputmode="@InputMode.ToString().ToLower()" />
+</FieldTemplate>

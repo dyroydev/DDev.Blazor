@@ -1,0 +1,12 @@
+<header class="top-app-bar" primary="@Primary" raised="@Raised">
+    <section class="top-app-bar__left">@LeftActions</section>
+    <section class="top-app-bar__title">@Title</section>
+    <section class="top-app-bar__right">@RightActions</section>
+
+    @if (Content is not null)
+    {
+        <Collapse Expanded="Expanded">
+            <section class="app-bar__content">@Content</section>
+        </Collapse>
+    }
+</header>

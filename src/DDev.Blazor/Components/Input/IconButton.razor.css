@@ -7,7 +7,8 @@
     height: 40px;
     display: inline-grid;
     place-items: center;
-    color: var(--on-surface);
+    color: inherit;
+    font: inherit;
     border-radius: 100vw;
     position: relative;
     cursor: pointer;

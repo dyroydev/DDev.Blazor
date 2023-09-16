@@ -1,0 +1,38 @@
+﻿<Dialog @ref="_dialog">
+    <Header>
+        @if (_original is null)
+        {
+            <span>New schedule</span>
+        }
+        else
+        {
+            <span>Edit @_original.Name</span>
+        }
+    </Header>
+    <Content>
+        <TextField Label="Name" @bind-Value="_model.Name" />
+        <ColorPicker @bind-Value="_model.Color" />
+
+        <SelectField Label="Every" @bind-Value="_model.RepeatType">
+            <OptionSource Source="Enum.GetValues<RepeaterType>()" />
+        </SelectField>
+
+        <NumberField Label="Period" @bind-Value="_model.RepeatPeriod" Min="1" Default="1" />
+
+        <DatePicker />
+
+    </Content>
+    <Actions>
+        <Button OnClick="() => _dialog!.CloseWithResult(false)">Cancel</Button>
+        <Button Primary OnClick="() => _dialog!.CloseWithResult(true)">
+            @if (_original is null)
+            {
+                <span>Create</span>
+            }
+            else
+            {
+                <span>Save</span>
+            }
+        </Button>
+    </Actions>
+</Dialog>

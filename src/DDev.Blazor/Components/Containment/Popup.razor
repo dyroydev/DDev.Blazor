@@ -1,4 +1,4 @@
-<div @ref="_popupElement" @onfocusout="HandleFocusOut" inert="@(!_isVisible)" class="popup" full-x="@_fullX" full-y="@_fullY" visible="@_isVisible" style="--x:@(_x)px; --y:@(_y)px">
+<div @ref="_popupElement" @onfocusout="HandleFocusOut" inert="@(!_isVisible)" class="popup" full-x="@_fullX" full-y="@_fullY" visible="@_isVisible" style="@_styles">
 
     @ChildContent
 

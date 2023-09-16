@@ -5,5 +5,8 @@
 /// </summary>
 public partial class AvatarSet
 {
+    /// <summary>
+    /// Should contain <see cref="Avatar"/> components.
+    /// </summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
 }

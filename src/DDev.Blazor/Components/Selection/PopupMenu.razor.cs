@@ -2,39 +2,70 @@
 
 public partial class PopupMenu
 {
-    [Parameter] public string Icon { get; set; } = "more_vert";
-
-    [Parameter] public string Id { get; set; } = ComponentId.New();
-
+    /// <inheritdoc cref="Menu.ChildContent" />
     [Parameter, EditorRequired] public RenderFragment? ChildContent { get; set; }
 
-    [Inject] private IJSRuntime? Js { get; set; }
+    /// <inheritdoc cref="Popup.VisibleChanged"/>
+    [Parameter] public EventCallback<bool> VisibleChanged { get; set; }
 
-    private Menu? _menu;
-    private Popup? _popup;
+    /// <inheritdoc cref="Menu.OnClickOption" />
+    [Parameter] public EventCallback<Option> OnClickOption { get; set; }
 
-    public async Task ShowAsync()
+    /// <inheritdoc cref="Popup.PlacementWidth"/>
+    [Parameter] public bool PlacementWidth { get; set; }
+
+    private TemplatePopupMenu<object>? _popupMenu;
+
+    /// <summary>
+    /// If <see langword="true"/>, the popup is visible.
+    /// </summary>
+    public bool IsVisible => _popupMenu?.IsVisible ?? false;
+
+    /// <inheritdoc cref="Menu.Options"/>
+    public IReadOnlySet<Option> Options => _popupMenu?.Options ?? Menu.EmptyOptions;
+
+    /// <summary>
+    /// Shows the popup at the given page-space coordinates.
+    /// </summary>
+    public async Task ShowAsync(double pageX, double pageY)
     {
-        if (_popup is null)
+        if (_popupMenu is null)
             return;
 
-        await _popup.ShowAsync(Id);
+        await _popupMenu.ShowAsync(null!, pageX, pageY);
     }
 
+    /// <summary>
+    /// Shows the popup anchored to the given element.
+    /// </summary>
+    public async Task ShowAsync(ElementReference element)
+    {
+        if (_popupMenu is null)
+            return;
+
+        await _popupMenu.ShowAsync(null!, element);
+    }
+
+    /// <summary>
+    /// Shows the popup anchored to the referenced element.
+    /// </summary>
+    public async Task ShowAsync(string elementReference)
+    {
+        if (_popupMenu is null)
+            return;
+
+        await _popupMenu.ShowAsync(null!, elementReference);
+    }
+
+    /// <summary>
+    /// Closes the menu.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> that completes when the popup is closed.</returns>
     public async Task CloseAsync()
     {
-        if (_popup is null)
+        if (_popupMenu is null)
             return;
 
-        await _popup.CloseAsync();
-    }
-
-    private async Task HandleVisibilityChanged(bool visible)
-    {
-        if (visible && _menu is not null)
-            await _menu.FocusAsync();
-
-        else if (Js is not null)
-            await Js.FocusAsync(Id);
+        await _popupMenu.CloseAsync();
     }
 }

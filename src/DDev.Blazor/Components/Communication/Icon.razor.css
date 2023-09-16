@@ -1,0 +1,8 @@
+﻿.icon {
+    font-weight: var(--size, 1em);
+}
+
+.icon[tabindex] {
+    cursor: pointer;
+    outline-color: var(--primary);
+}

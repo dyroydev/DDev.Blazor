@@ -1,12 +1,12 @@
 <Backdrop @ref="_backdrop" OnClick="Close">
 
-    <div class="side-sheet" @onclick:stopPropagation>
+    <div class="side-sheet" @onclick:stopPropagation right="@RightAnchored">
 
         <div class="side-sheet__header">
 
             @if (string.IsNullOrWhiteSpace(Icon) is false)
             {
-                <IconButton Icon="@Icon" Tooltip="@IconTooltip" OnClick="@OnClickIcon" />
+                <IconButton Icon="@Icon" Hint="@IconTooltip" OnClick="@OnClickIcon" />
             }
             else
             {

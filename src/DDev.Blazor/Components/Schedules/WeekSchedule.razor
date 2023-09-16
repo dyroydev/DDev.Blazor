@@ -1,0 +1,63 @@
+<article class="week-schedule">
+    <section class="week-schedule__header">
+        <div class="week-schedule__title">Week</div>
+        @for (var i = 0; i < 7; i++)
+        {
+            var date = _firstDate.AddDays(i);
+            <div class="week-schedule__title">
+                @date.ToString("dddd")
+            </div>
+        }
+    </section>
+    <section class="week-schedule__content">
+        <div class="week-schedule__weeks">
+            @for (var w = 0; w < WeekCount; w++)
+            {
+                var week = _firstDate.AddDays(7 * w);
+                var weekOfYear = week.GetWeekOfYear();
+
+                <article class="week-schedule__week">
+                    @weekOfYear
+                </article>
+
+                @for (var d = 0; d < 7; d++)
+                {
+                    var date = week.AddDays(d);
+                    var items = _items.GetValueOrDefault(date) ?? new List<ScheduleSourceItem>();
+                    <article class="week-schedule__day">
+                        <section class="week-schedule__day-title" today="@(date == _today)" week-of-year="@weekOfYear">
+                            @if (date == _today)
+                            {
+                                <span>Today</span>
+                            }
+                            else if (date.Month == 1 && date.Day == 1)
+                            {
+                                @date.ToString("yyyy")
+                            }
+                            else if (date.Day == 1 || date == _firstDate)
+                            {
+                                @date.ToString("MMMM")
+                            }
+                            else
+                            {
+                                @date.ToString("dd")
+                            }
+                        </section>
+                        <section class="week-schedule__events">
+                            @foreach (var item in items)
+                            {
+                                <div class="week-schedule__item">
+                                    @item.Fragment
+                                </div>
+                            }
+                        </section>
+                    </article>
+                }
+            }
+        </div>
+    </section>
+</article>
+
+<CascadingValue TValue="IScheduleSourceContainer" Value="this" IsFixed>
+    @ChildContent
+</CascadingValue>

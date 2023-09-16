@@ -1,0 +1,10 @@
+﻿.select-field__button {
+    display: flex;
+    align-items: center;
+    color: var(--on-disabled);
+    transition: transform 200ms ease-in-out;
+}
+
+.select-field__button[flip] {
+    transform: rotate(180deg);
+}

@@ -1,0 +1,6 @@
+@typeparam T
+@inherits FieldBase<T>
+
+<FieldTemplate Label="@Label" ValueId="@Id" Disabled="Disabled" Empty="string.IsNullOrWhiteSpace(_valueAsString)">
+    <input class="text-field__value" type="number" min="@Min" max="@Max" step="@Step" @bind="_valueAsString" @bind:after="HandleStringValueChanged" />
+</FieldTemplate>

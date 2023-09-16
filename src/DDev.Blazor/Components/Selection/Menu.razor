@@ -1,3 +1,5 @@
-<ul class="menu" id="@Id" @onclick="OnClick">
-    @ChildContent
+<ul class="menu dd-surface" elevation="3" id="@Id" @onclick="OnClick" @onkeydown="OnKeyDown">
+    <CascadingValue IsFixed Value="this">
+        @ChildContent
+    </CascadingValue>
 </ul>

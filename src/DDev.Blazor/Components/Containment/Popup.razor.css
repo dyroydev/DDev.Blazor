@@ -5,6 +5,8 @@
     z-index: 300;
     pointer-events: none;
     opacity: 0;
+    --surface: color-mix(in srgb, var(--primary) 2%, var(--original-surface));
+    --container-shadow: var(--container-shadow-1);
 }
 
 .popup[visible] {

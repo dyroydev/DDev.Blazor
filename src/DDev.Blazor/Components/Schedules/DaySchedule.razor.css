@@ -1,0 +1,139 @@
+﻿.day-schedule {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    --info-size: 70px;
+    --min-day-size: 200px;
+    --hours-visible: 24;
+    --hours-offset: 0;
+    --day-count: 7;
+}
+
+.day-schedule__header,
+.day-schedule__grid {
+    display: grid;
+    grid-template-columns: var(--info-size) 1fr;
+}
+
+.day-schedule__titles,
+.day-schedule__all-days,
+.day-schedule__days {
+    display: grid;
+    grid-template-columns: repeat(var(--day-count), minmax(var(--min-day-size), 1fr));
+}
+
+.day-schedule__titles-info,
+.day-schedule__all-days-info,
+.day-schedule__hours,
+.day-schedule__title,
+.day-schedule__all-day,
+.day-schedule__day {
+    border-right: 1px solid var(--disabled);
+}
+
+.day-schedule__titles-info {
+    display: grid;
+    place-items: center;
+    place-content: center;
+}
+
+.day-schedule__all-days-info {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+}
+
+.day-schedule__title {
+    padding: 4px;
+    display: grid;
+    place-items: center;
+}
+.day-schedule__titles-info__header,
+.day-schedule__title__info {
+    text-transform: uppercase;
+    color: var(--on-disabled);
+    font-size: 0.9em;
+}
+.day-schedule__titles-info__content,
+.day-schedule__title__date {
+    font-size: 1.4em;
+}
+
+.day-schedule__content {
+    border-top: 1px solid var(--disabled);
+    position: relative;
+    overflow-y: scroll;
+}
+.day-schedule__content::-webkit-scrollbar {
+    width: 0;
+}
+.day-schedule__content {
+    scrollbar-width: none;
+}
+
+.day-schedule__grid {
+    height: calc(var(--hours-visible) * var(--hour-size));
+}
+
+.day-schedule__days {
+}
+
+.day-schedule__all-days-info,
+.day-schedule__hours {
+    color: var(--on-disabled);
+    font-size: 0.9em;
+}
+
+.day-schedule__hour {
+    position: absolute;
+    top: calc(var(--hour) * var(--hour-size) - var(--hours-offset) * var(--hour-size));
+    left: calc(var(--info-size) - 45px);
+    transform: translateY(-50%);
+}
+.day-schedule__hour-line {
+    position: absolute;
+    top: calc(var(--hour) * var(--hour-size) - var(--hours-offset) * var(--hour-size));
+    width: calc(100% + 20px - var(--info-size));
+    left: 50px;
+    height: 1px;
+    background-color: var(--disabled);
+}
+
+.day-schedule__day {
+    position: relative;
+}
+
+.day-schedule__now {
+    position: absolute;
+    top: calc(var(--hour) * var(--hour-size) - var(--hours-offset) * var(--hour-size));
+    height: 1px;
+    width: 100%;
+    background-color: var(--primary);
+}
+.day-schedule__now::before {
+    content: "";
+    display: block;
+    width: 1em;
+    height: 1em;
+    background-color: inherit;
+    border-radius: 100%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.day-schedule__day-item {
+    --fraction: 1;
+    --index: 0;
+
+    position: absolute;
+    width: calc(100% * var(--fraction));
+    left: calc(100% * var(--fraction) * var(--index));
+    top: calc(var(--hour) * var(--hour-size) - var(--hours-offset) * var(--hour-size));
+    height: calc(var(--duration) * var(--hour-size));
+    box-sizing: border-box;
+    container: schedule-item / size;
+}
+
+.day-schedule__all-day-item {
+    margin-bottom: 4px;
+    box-sizing: border-box;
+    container: schedule-item / inline-size;
+}

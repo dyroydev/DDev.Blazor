@@ -1,39 +1,69 @@
 ﻿namespace DDev.Blazor.Extensions;
 
+/// <summary>
+/// Extensions method for the <see cref="IJSRuntime"/> to subscribe to document events.
+/// </summary>
 public static class JsRuntimeEventExtensions
 {
+    /// <summary>
+    /// Invoke <paramref name="handler"/> every time the document raises an event with name <paramref name="eventName"/>.
+    /// </summary>
     public static Task<IDisposable> OnEvent(this IJSRuntime js, string eventName, Action handler)
     {
         return OnEvent(js, eventName, null, handler);
     }
 
+    /// <summary>
+    /// Invoke <paramref name="handler"/> every time the document raises an event with name <paramref name="eventName"/>.
+    /// </summary>
     public static Task<IDisposable> OnEvent<T>(this IJSRuntime js, string eventName, Action<T> handler)
     {
         return OnEvent(js, eventName, null, handler);
     }
+
+    /// <summary>
+    /// Invoke <paramref name="handler"/> every time the document raises an event with name <paramref name="eventName"/>.
+    /// </summary>
     public static Task<IDisposable> OnEvent(this IJSRuntime js, string eventName, Func<Task> handler)
     {
         return OnEvent(js, eventName, null, handler);
     }
 
+    /// <summary>
+    /// Invoke <paramref name="handler"/> every time the document raises an event with name <paramref name="eventName"/>.
+    /// </summary>
     public static Task<IDisposable> OnEvent<T>(this IJSRuntime js, string eventName, Func<T, Task> handler)
     {
         return OnEvent(js, eventName, null, handler);
     }
+
+    /// <summary>
+    /// Invoke <paramref name="handler"/> every time the document raises an event with name <paramref name="eventName"/>.
+    /// </summary>
     public static Task<IDisposable> OnEvent(this IJSRuntime js, string eventName, string? reference, Action handler)
     {
         return OnEvent(js, eventName, reference, handler.ToAsync());
     }
 
+    /// <summary>
+    /// Invoke <paramref name="handler"/> every time the document raises an event with name <paramref name="eventName"/>.
+    /// </summary>
     public static Task<IDisposable> OnEvent<T>(this IJSRuntime js, string eventName, string? reference, Action<T> handler)
     {
         return OnEvent(js, eventName, reference, handler.ToAsync());
     }
+
+    /// <summary>
+    /// Invoke <paramref name="handler"/> every time the document raises an event with name <paramref name="eventName"/>.
+    /// </summary>
     public static Task<IDisposable> OnEvent(this IJSRuntime js, string eventName, string? reference, Func<Task> handler)
     {
         return OnEvent<object>(js, eventName, reference, _ => handler());
     }
 
+    /// <summary>
+    /// Invoke <paramref name="handler"/> every time the document raises an event with name <paramref name="eventName"/>.
+    /// </summary>
     public static async Task<IDisposable> OnEvent<T>(this IJSRuntime js, string eventName, string? reference, Func<T, Task> handler)
     {
         var subscription = new JsEventSubscription<T>(handler);

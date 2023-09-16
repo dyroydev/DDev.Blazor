@@ -35,6 +35,7 @@ public partial class Backdrop
     private readonly string _backdropId = ComponentId.New();
     private PortalSource? _portal;
     private bool _isOpen;
+    private bool _isRendered;
 
     /// <summary>
     /// Opens the backdrop and shows its content.
@@ -43,6 +44,7 @@ public partial class Backdrop
     {
         _portal?.MoveToEnd();
         _isOpen = true;
+        _isRendered = _isOpen;
         StateHasChanged();
     }
 
@@ -53,6 +55,8 @@ public partial class Backdrop
     {
         _isOpen = false;
         StateHasChanged();
+
+        DisableRenderAfterTimeout().Discard("Failed to disable render");
     }
 
     private async Task HandleClick()
@@ -62,7 +66,7 @@ public partial class Backdrop
 
     private async Task HandleFocusOut()
     {
-        if (await Js!.InvokeDDevAsync<bool>("focus", "hasFocus", _backdropId))
+        if (await Js!.HasFocusAsync(_backdropId))
             return;
 
         await OnFocusOut.InvokeAsync();
@@ -82,5 +86,21 @@ public partial class Backdrop
             await OnFocusOutBottom.InvokeAsync();
         else
             await HandleFocusOut();
+    }
+
+    /// <summary>
+    /// Disabled rendering after timeout if backdrop is closed.
+    /// </summary>
+    /// <remarks>
+    /// This is to allow for an exit animation.
+    /// </remarks>
+    private async Task DisableRenderAfterTimeout()
+    {
+        await Task.Delay(TimeSpan.FromMilliseconds(300));
+        if (_isOpen is false)
+        {
+            _isRendered = false;
+            StateHasChanged();
+        }
     }
 }

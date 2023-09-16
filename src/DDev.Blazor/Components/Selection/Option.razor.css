@@ -9,13 +9,21 @@
     outline: none;
 }
 
-.menu-item:focus,
+.menu-item:focus-visible,
 .menu-item:hover {
     background-color: color-mix(in srgb, currentColor 5%, transparent);
 }
 
 .menu-item:active {
     background-color: color-mix(in srgb, currentColor 10%, transparent);
+}
+
+.menu-item[selected] {
+    background-color: color-mix(in srgb, var(--primary) 20%, transparent);
+}
+.menu-item[selected]:focus-visible,
+.menu-item[selected]:hover {
+    background-color: color-mix(in srgb, var(--primary) 30%, transparent);
 }
 
 .menu-item[disabled] {

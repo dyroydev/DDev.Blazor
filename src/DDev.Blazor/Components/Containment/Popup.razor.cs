@@ -1,4 +1,7 @@
-﻿namespace DDev.Blazor.Components.Containment;
+﻿using DDev.Blazor.Extensions;
+using DDev.Blazor.Services;
+
+namespace DDev.Blazor.Components.Containment;
 
 /// <summary>
 /// Defines a popup surface.
@@ -13,12 +16,17 @@ public partial class Popup : IDisposable
     /// <summary>
     /// Callback invoked when the visibility of the popup has changed.
     /// </summary>
-    [Parameter] public EventCallback<bool> VisibilityChanged { get; set; }
+    [Parameter] public EventCallback<bool> VisibleChanged { get; set; }
 
     /// <summary>
     /// Optional override for the id-attribute on the popup element.
     /// </summary>
     [Parameter] public string Id { get; set; } = ComponentId.New();
+
+    /// <summary>
+    /// If <see langword="true"/>, the popup width is set to the width of the placement anchor.
+    /// </summary>
+    [Parameter] public bool PlacementWidth { get; set; }
 
     [Inject] IJSRuntime Js { get; set; } = null!;
 
@@ -29,6 +37,12 @@ public partial class Popup : IDisposable
     private double _y;
     private bool _fullX;
     private bool _fullY;
+    private string? _styles;
+
+    /// <summary>
+    /// If <see langword="true"/>, the popup is visible.
+    /// </summary>
+    public bool IsVisible => _isVisible;
 
     /// <summary>
     /// Closes the popup.
@@ -40,7 +54,7 @@ public partial class Popup : IDisposable
 
         _isVisible = false;
         StateHasChanged();
-        await VisibilityChanged.InvokeAsync(false);
+        await VisibleChanged.InvokeAsync(false);
     }
 
     /// <summary>
@@ -73,7 +87,6 @@ public partial class Popup : IDisposable
 
         var viewport = await popupModule.InvokeAsync<PageRectangle>("getViewportBoundingRectangle");
         var popup = await popupModule.InvokeAsync<PageRectangle>("getBoundingRectangle", _popupElement);
-        popup = popup with { Width = 200 };
 
         _fullX = 
             SetIfValid(ref _x, 'x', placement.X, popup.Width, viewport.X, viewport.Width) is false &&
@@ -83,16 +96,25 @@ public partial class Popup : IDisposable
             SetIfValid(ref _y, 'y', placement.Y + placement.Height, popup.Height, viewport.Y, viewport.Height) is false &&
             SetIfValid(ref _y, 'y', placement.Y - popup.Height, popup.Height, viewport.Y, viewport.Height) is false;
 
+        _styles = new CssStyle()
+            .Set("--x", $"{_x:0}px")
+            .Set("--y", $"{_y:0}px")
+            .Set("min-width", $"{placement.Width}px", PlacementWidth)
+            .ToString();
 
         _isVisible = true;
         StateHasChanged();
 
-        await VisibilityChanged.InvokeAsync(true);
+        await VisibleChanged.InvokeAsync(true);
     }
 
-    protected override async Task OnInitializedAsync()
+    /// <inheritdoc />
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        _onScrollListener = await Js.OnEvent("scroll", CloseAsync);
+        if (firstRender)
+        {
+            _onScrollListener = await Js.OnEvent("scroll", CloseAsync);
+        }
     }
 
     void IDisposable.Dispose()
@@ -102,9 +124,7 @@ public partial class Popup : IDisposable
 
     private async Task HandleFocusOut()
     {
-        await using var focusModule = await Js.OpenDDevJsModule("focus");
-
-        if (await focusModule.InvokeAsync<bool>("hasFocus", _popupElement))
+        if (await Js!.HasFocusAsync(_popupElement))
             return;
 
         await CloseAsync();

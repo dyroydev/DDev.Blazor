@@ -1,12 +1,13 @@
 ﻿.backdrop {
     position: fixed;
+    display: grid;
     z-index: 200;
     width: 100vw;
     height: 100vh;
     top: 0;
     left: 0;
-    background-color: color-mix(in srgb, var(--surface) 40%, transparent);
-    backdrop-filter: blur(2px);
+    background-color: var(--backdrop-color, color-mix(in srgb, var(--surface) 40%, transparent));
+    backdrop-filter: blur(var(--backdrop-blur, 2px));
 
     transition: opacity 200ms ease-in-out;
 }

@@ -18,11 +18,16 @@ public partial class Icon
     /// <summary>
     /// Tooltip informing what the icon represents.
     /// </summary>
-    [Parameter] public string? Tooltip { get; set; }
+    [Parameter] public string? Hint { get; set; }
 
     /// <summary>
     /// Optional override for size of the icon. Value is a CSS length and must include a unit.
     /// </summary>
-    /// <remarks>Default is <c>24px</c>.</remarks>
-    [Parameter] public string Size { get; set; } = "24px";
+    /// <remarks>Default is <c>1em</c>.</remarks>
+    [Parameter] public string? Size { get; set; }
+
+    /// <summary>
+    /// Value given to <c>"id"</c>-attribute on icon element.
+    /// </summary>
+    [Parameter] public string Id { get; set; } = ComponentId.New();
 }

@@ -1,0 +1,72 @@
+﻿::deep .text-field__value {
+    appearance: none;
+    border: none;
+    font: inherit;
+    background-color: transparent;
+    outline: none;
+    flex-grow: 1;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    outline: none;
+}
+
+::deep .text-field__value::placeholder {
+    transition: opacity 100ms ease-in-out;
+}
+
+.text-field {
+    border: 1px solid var(--disabled);
+    border-radius: var(--component-radius);
+    display: flex;
+    height: 40px;
+    padding: 0 11px;
+    box-sizing: border-box;
+    position: relative;
+    transition: border-color 100ms ease-in-out;
+    background-color: var(--surface);
+}
+
+label {
+    position: absolute;
+    top: 0;
+    transform: translateY(-50%);
+    font-size: 12px;
+    padding: 0 4px;
+    border-radius: var(--component-radius);
+    background-color: inherit;
+    transition: top, transform, font-size, color;
+    transition-duration: 100ms;
+    transition-timing-function: ease-in-out;
+}
+
+.text-field[role="button"] {
+    cursor: pointer;
+}
+
+.text-field[empty]:not(:focus-within, [focused]) label {
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: inherit;
+}
+
+.text-field[empty]:not(:focus-within, [focused])) input::placeholder {
+    opacity: 0;
+}
+
+.text-field[focused],
+.text-field:focus-within {
+    border-color: var(--primary);
+    border-width: 2px;
+    padding: 0 10px;
+}
+
+.text-field[focused] label,
+.text-field:focus-within label {
+    color: var(--primary);
+}
+
+.text-field[disabled] {
+    background-color: var(--disabled);
+    color: var(--on-disabled);
+}

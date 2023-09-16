@@ -1,0 +1,89 @@
+﻿@page "/"
+
+<PageTitle>@GetTitle()</PageTitle>
+<PortalSource Name="title">@GetTitle()</PortalSource>
+
+<article>
+
+    <TopAppBar>
+
+        <LeftActions>
+            <IconButton Icon="menu" OnClick="ClickOpenMenu" Hint="Open sidebar" />
+        </LeftActions>
+
+        <Title>
+            @GetTitle()
+        </Title>
+
+        <RightActions>
+            <ButtonSet>
+
+                @foreach (var mode in Enum.GetValues<ViewMode>())
+                {
+                    <Button OnClick="() => _viewMode = mode" Selected="_viewMode == mode">@mode</Button>
+                }
+
+            </ButtonSet>
+        </RightActions>
+
+    </TopAppBar>
+    <section>
+        @if (_viewMode == ViewMode.Week)
+        {
+            <DaySchedule StartDay="_startOfWeek" DayCount="7">
+
+                <ScheduleSource Fetch="GetEventsBetween" Date="context => DateOnly.FromDateTime(context.Time.DateTime)" Time="context => TimeOnly.FromDateTime(context.Time.DateTime)" Duration="context => context.Event.Duration">
+                    <div class="event event--month" style="--color:@(GetColor(context))">
+                        <div class="event__title">@context.Event.Name</div>
+                        <div class="event__description">@context.Event.Description</div>
+                        <div class="event__location">@context.Event.Location</div>
+                    </div>
+                </ScheduleSource>
+
+            </DaySchedule>
+        }
+        else
+        {
+            <WeekSchedule StartWeek="_startOfMonth" WeekCount="5">
+
+                <ScheduleSource Fetch="GetEventsBetween" Date="context => DateOnly.FromDateTime(context.Time.DateTime)">
+                    <div class="event event--month" style="--color:@(GetColor(context))" @onclick="() => ClickEvent(context.Event)">
+                        <div class="event__title">@context.Event.Name</div>
+                        <div class="event__description">@context.Event.Description</div>
+                        <div class="event__location">@context.Event.Location</div>
+                    </div>
+                </ScheduleSource>
+
+            </WeekSchedule>
+        }
+    </section>
+</article>
+
+<SideSheet Title="Schedules" @ref="_sidebar">
+    <Content>
+        <Menu>
+            @foreach (var schedule in _schedules)
+            {
+                <Option Id="@(schedule.Id.ToString("N"))"
+                        Icon="@(_selectedScheduleIds.Contains(schedule.Id) ? "check" : "")"
+                        HintIcon="more_vert"
+                        OnClick="() => ClickSchedule(schedule)"
+                        OnClickHint="@(() => _popupMenu!.ShowAsync(schedule, schedule.Id.ToString("N") + "__hint"))">
+                            @schedule.Name
+                </Option>
+            }
+        </Menu>
+    </Content>
+    <Actions>
+        <Button Icon="add" OnClick="() => CreateNewSchedule()">New schedule</Button>
+    </Actions>
+</SideSheet>
+
+<TemplatePopupMenu @ref="_popupMenu" T="ScheduleApp.Services.ScheduleVm" Context="schedule">
+    <Option OnClick="() => EditSchedule(schedule)">Edit</Option>
+    <Option OnClick="() => DeleteSchedule(schedule)">Delete</Option>
+</TemplatePopupMenu>
+
+<EditScheduleDialog @ref="_editScheduleDialog" />
+
+<EditEventDialog @ref="_editEventDialog" />

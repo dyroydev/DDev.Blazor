@@ -1,0 +1,30 @@
+﻿.top-app-bar {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: 44px;
+    grid-auto-rows: auto;
+    padding: 8px 16px;
+    gap: 32px;
+    box-sizing: border-box;
+    border-bottom: 1px solid var(--disabled);
+    background-color: var(--surface);
+    color: var(--on-surface);
+}
+
+.top-app-bar[primary] {
+    border-bottom-color: var(--primary);
+    background-color: var(--primary);
+    color: var(--on-primary);
+}
+
+.top-app-bar__left,
+.top-app-bar__right,
+.top-app-bar__title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.top-app-bar__title {
+    font-size: 1.5em;
+}

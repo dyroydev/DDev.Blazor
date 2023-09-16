@@ -1,6 +1,6 @@
 @if (string.IsNullOrWhiteSpace(Name) is false)
 {
-    <span class="icon material-symbols-rounded" title="@Tooltip" @onclick:stopPropagation="OnClick.HasDelegate" @onclick="OnClick" style="font-size:@Size">
+    <span class="icon material-symbols-rounded" title="@Hint" @onclick:stopPropagation="OnClick.HasDelegate" tabindex="@(OnClick.HasDelegate ? "0" : null)" @onclick="OnClick" style="--size:@Size;" id="@Id">
         @Name
     </span>
 }

@@ -1,16 +1,12 @@
 ﻿.dialog {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
     background-color: var(--surface);
-    /*border: 1px solid var(--disabled);*/
     border-radius: var(--container-radius);
     display: grid;
     padding: 24px;
     gap: 16px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    box-shadow: var(--container-shadow-3);
     min-width: 300px;
+    place-self: center;
 }
 
 .dialog__header {

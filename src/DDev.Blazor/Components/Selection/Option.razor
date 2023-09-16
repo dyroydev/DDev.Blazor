@@ -1,8 +1,8 @@
-<li class="menu-item" tabindex="@(Disabled ? -1 : 0)" disabled="@Disabled" @onclick="HandleClick">
+<li class="menu-item" tabindex="@(Disabled ? -1 : 0)" id="@Id" disabled="@Disabled" @onclick="HandleClick" @onkeydown="HandleKeyDown" selected="@Selected">
     <div class="menu-item__icon"><Icon Name="@Icon" /></div>
     <div class="menu-item__label">@ChildContent</div>
-    <div class="menu-item__hint">
+    <div class="menu-item__hint" @onclick="HandleClickHint" @onkeydown="HandleKeyDownHint" @onclick:stopPropagation="OnClickHint.HasDelegate" @onkeydown:stopPropagation="OnClickHint.HasDelegate" tabindex="@(OnClickHint.HasDelegate ? "0" : null)" id="@(Id + "__hint")">
         @Hint
-        <Icon Name="@HintIcon" />
+        <Icon Name="@HintIcon" Size="0.9em" />
     </div>
 </li>

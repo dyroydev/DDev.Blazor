@@ -1,0 +1,104 @@
+﻿<article class="day-schedule" style="--hour-size:@(HourSize);--day-count:@(DayCount);--hours-visible:@(GetHours(EndTime - StartTime));--hours-offset:@(GetHours(StartTime))">
+
+    <section class="day-schedule__header">
+
+        <section class="day-schedule__titles-info">
+
+            @if (string.IsNullOrWhiteSpace(InfoHeader) is false)
+            {
+                <div class="day-schedule__titles-info__header">@InfoHeader</div>
+            }
+            @if (string.IsNullOrWhiteSpace(Info) is false)
+            {
+                <div class="day-schedule__titles-info__content">@Info</div>
+            }
+
+        </section>
+
+        <section class="day-schedule__titles">
+
+            @foreach (var date in _days)
+            {
+                <div class="day-schedule__title">
+                    <div class="day-schedule__title__info">@date.ToString("ddd")</div>
+                    <div class="day-schedule__title__date">@date.ToString("dd")</div>
+                </div>
+            }
+
+        </section>
+
+        <section class="day-schedule__all-days-info">
+
+            All day
+
+        </section>
+
+        <section class="day-schedule__all-days">
+
+            @foreach (var date in _days)
+            {
+                var items = _items.GetValueOrDefault(date)?.Where(i => i.IsAllDay) ?? Enumerable.Empty<ScheduleSourceItem>();
+                <div class="day-schedule__all-day">
+                    @foreach (var item in items)
+                    {
+                        <div class="day-schedule__all-day-item">
+                            @item.Fragment
+                        </div>
+                    }
+                </div>
+            }
+
+        </section>
+
+    </section>
+
+    <section class="day-schedule__content">
+
+        <section class="day-schedule__grid">
+
+            <section class="day-schedule__hours">
+
+                @for (var i = StartTime.Hour + 1; i < EndTime.Hour + 1; i++)
+                {
+                    <div class="day-schedule__hour" style="--hour:@i">@i.ToString("00")</div>
+                    <div class="day-schedule__hour-line" style="--hour:@i"></div>
+                }
+
+            </section>
+
+            <section class="day-schedule__days">
+
+                @foreach (var date in _days)
+                {
+                    var items = _items.GetValueOrDefault(date)?.Where(i => i.IsAllDay is false) ?? Enumerable.Empty<ScheduleSourceItem>();
+                    <div class="day-schedule__day">
+
+                        @foreach (var item in items)
+                        {
+                            var (split, index) = _splits.GetValueOrDefault(item, (1, 0));
+                            <div class="day-schedule__day-item" style="--hour:@(GetHours(item.Time));--duration:@(GetHours(item.Duration));--fraction:@((1.0 / split).ToString().Replace(',', '.'));--index:@(index)">
+                                @item.Fragment
+                            </div>
+                        }
+
+                        @if (date == _today)
+                        {
+                            <div class="day-schedule__now" style="--hour:@(GetHours(DateTime.Now.TimeOfDay))" title="@($"{DateTime.Now:HH:mm}, now")"></div>
+                        }
+
+                    </div>
+                }
+
+            </section>
+
+        </section>
+
+    </section>
+
+</article>
+
+<CascadingValue TValue="IScheduleSourceContainer" IsFixed Value="this">
+
+    @ChildContent
+
+</CascadingValue>

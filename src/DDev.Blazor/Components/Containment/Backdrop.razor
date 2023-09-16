@@ -1,11 +1,13 @@
-<PortalSource Name="@(nameof(Backdrop))">
+<PortalSource Name="@(nameof(Backdrop))" @ref="_portal">
 
-    <div class="backdrop" inert="@(!_isOpen)" @onclick="HandleClick" @onfocusout="HandleFocusOut">
+    <div class="backdrop" id="@_backdropId" inert="@(!_isOpen)" @onclick="HandleClick" @onfocusout="HandleFocusOut">
 
         <div tabindex="0" @onfocus="HandleFocusTop"></div>
 
-        @ChildContent
-
+        @if (_isRendered)
+        {
+            @ChildContent
+        }
 
         <div tabindex="0" @onfocus="HandleFocusBottom"></div>
 

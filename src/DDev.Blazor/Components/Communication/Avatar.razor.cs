@@ -1,4 +1,6 @@
-﻿namespace DDev.Blazor.Components.Communication;
+﻿using DDev.Blazor.Services;
+
+namespace DDev.Blazor.Components.Communication;
 
 /// <summary>
 /// An avatar shows an image or text to represent a person or group as well as give additional information like their status and activity.
@@ -38,7 +40,7 @@ public partial class Avatar
     /// <summary>
     /// Optional override for tooltip shown when hovering avatar. (Default to Name).
     /// </summary>
-    [Parameter] public string? Tooltip { get; set; }
+    [Parameter] public string? Hint { get; set; }
 
     /// <summary>
     /// Optional icon indicating the status of the represented item.
@@ -66,10 +68,11 @@ public partial class Avatar
     private string? _tooltip;
     private bool _hasStatus;
 
+    /// <inheritdoc />
     protected override void OnParametersSet()
     {
         _color = string.IsNullOrWhiteSpace(Color)
-            ? GenerateBackgroundColor(Id ?? Name ?? Initials)
+            ? CssColor.RandomStrong(Id ?? Name ?? Initials)
             : Color;
 
         _initials = string.IsNullOrWhiteSpace(Initials)
@@ -80,31 +83,11 @@ public partial class Avatar
             ? "40px"
             : Size;
 
-        _tooltip = Tooltip ?? Name;
+        _tooltip = Hint ?? Name;
 
         _hasStatus = string.IsNullOrWhiteSpace(StatusIcon) is false ||
                 string.IsNullOrWhiteSpace(StatusTooltip) is false ||
                 string.IsNullOrWhiteSpace(StatusColor) is false;
-    }
-
-    /// <summary>
-    /// Generates a random color consistent for the given <paramref name="seed"/>.
-    /// </summary>
-    /// <returns>A CSS color value.</returns>
-    public static string GenerateBackgroundColor(object? seed)
-    {
-        var hash = Math.Abs(seed?.GetHashCode() ?? 0);
-
-        // Range: 0 - 360
-        var hue = hash % 360;
-
-        // Range: 50 - 75
-        var saturation = (hash % 25) + 50;
-
-        // Range: 25 - 60
-        var lightness = (hash % 35) + 25;
-
-        return $"hsl({hue}, {saturation}%, {lightness}%)";
     }
 
     /// <summary>

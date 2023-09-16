@@ -1,8 +1,9 @@
-﻿namespace DDev.Blazor.Components.Communication;
+﻿using DDev.Blazor.Services;
 
-internal class MessageBoxInternal : ComponentBase
+namespace DDev.Blazor.Components.Communication;
+
+internal class MessageBoxInternal : ComponentBase, IMessageBox
 {
-    private static MessageBoxInternal? _instance;
     private Dialog? _dialog;
     private string? _title;
     private string? _icon;
@@ -12,37 +13,19 @@ internal class MessageBoxInternal : ComponentBase
     private string? _dismiss;
     private string? _dismissIcon;
 
-    public static Task<bool> ShowAsync(RenderFragment<Dialog> statement, string? title, string? icon, string? confirm, string? confirmIcon, string? dismiss, string? dismissIcon)
+    private Task<bool> ShowAsync(RenderFragment<Dialog> statement, string? title, string? icon, string? confirm, string? confirmIcon, string? dismiss, string? dismissIcon)
     {
-        if (_instance?._dialog is null)
-            throw new InvalidOperationException($"No instance of {nameof(MessageBox)} has been initialized.");
+        _dialog?.Close();
+        _title = title;
+        _icon = icon;
+        _confirm = confirm;
+        _confirmIcon = confirmIcon;
+        _dismiss = dismiss;
+        _dismissIcon = dismissIcon;
+        _statement = statement;
 
-        _instance._dialog.Close();
-        _instance._title = title;
-        _instance._icon = icon;
-        _instance._confirm = confirm;
-        _instance._confirmIcon = confirmIcon;
-        _instance._dismiss = dismiss;
-        _instance._dismissIcon = dismissIcon;
-        _instance._statement = statement;
-
-        var source = new TaskCompletionSource<bool>();
-
-        _instance.InvokeAsync(() => _instance.ShowAsync(source));
-
-        return source.Task;
-    }
-
-    public async Task ShowAsync(TaskCompletionSource<bool> source)
-    {
         StateHasChanged();
-        var task = _dialog?.ShowAsync<bool>() ?? Task.FromResult(false);
-        source.SetResult(await task);
-    }
-
-    protected override void OnInitialized()
-    {
-        _instance = this;
+        return _dialog?.ShowAsync<bool>() ?? Task.FromResult(false);
     }
 
     protected override void BuildRenderTree(RenderTreeBuilder builder)
@@ -122,5 +105,15 @@ internal class MessageBoxInternal : ComponentBase
     private void HandleDismiss()
     {
         _dialog?.CloseWithResult(false);
+    }
+
+    public Task AlertAsync(RenderFragment statement, string? title = null, string? icon = null, string confirm = "Ok", string? confirmIcon = null)
+    {
+        return ShowAsync(_ => statement, title, icon, confirm, confirmIcon, dismiss:null, dismissIcon:null);
+    }
+
+    public Task<bool> ConfirmAsync(RenderFragment statement, string? title = null, string? icon = null, string confirm = "Confirm", string? confirmIcon = null, string dismiss = "Dismiss", string? dismissIcon = null)
+    {
+        return ShowAsync(_ => statement, title, icon, confirm, confirmIcon, dismiss, dismissIcon);
     }
 }

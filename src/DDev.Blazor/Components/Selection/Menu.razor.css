@@ -3,8 +3,10 @@
     padding: 8px 0;
     border: 1px solid var(--disabled);
     border-radius: var(--component-radius);
-    background-color: color-mix(in srgb, var(--primary) 5%, var(--surface));
     white-space: nowrap;
+    background-color: var(--surface);
+    color: var(--on-surface);
+    box-shadow: var(--container-shadow);
 }
 
 ::deep > hr {
