@@ -5,11 +5,6 @@ VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDev.Blazor", "DDev.Blazor\DDev.Blazor.csproj", "{7F779EF6-0672-4EE5-ABE7-8C5FB3273E67}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7307C60F-8157-4F1D-9D69-B041C3EA6670}"
-	ProjectSection(SolutionItems) = preProject
-		readme.md = readme.md
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{FD464CB3-D010-4339-84A4-9A13E6EC6C95}"
 	ProjectSection(SolutionItems) = preProject
 		Samples\readme.md = Samples\readme.md
@@ -17,7 +12,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{FD46
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScheduleApp", "Samples\ScheduleApp\ScheduleApp.csproj", "{834D7BDE-8D73-44C8-9E09-1887247A23E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Samples\Common\Common.csproj", "{F8F407E5-D72C-4853-82BD-2EB5122215A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Samples\Common\Common.csproj", "{F8F407E5-D72C-4853-82BD-2EB5122215A0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Repository", "Repository", "{601738E2-1BF9-4011-8D6A-BB4C2DCF3B76}"
+	ProjectSection(SolutionItems) = preProject
+		..\.gitignore = ..\.gitignore
+		..\readme.md = ..\readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

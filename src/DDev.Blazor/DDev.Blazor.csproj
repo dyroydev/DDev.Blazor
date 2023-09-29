@@ -24,7 +24,7 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<None Include="$(SolutionDir)readme.md" Pack="true" PackagePath="\" />
+		<None Include="..\..\readme.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
   <ItemGroup>
