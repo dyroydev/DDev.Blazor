@@ -71,13 +71,27 @@ public partial class TimeField
 
     private async Task HourChangedAsync()
     {
-        _hour = ParseOrDefault(_hourAsString, max:23);
+        if (_hourAsString.Contains(':'))
+        {
+            _hourAsString = _hourAsString.Split(':')[0];
+            await FocusMinuteAsync();
+        }
+
+        _hour = ParseOrDefault(_hourAsString, max: 59);
+
         await ValueChangedAsync();
     }
 
     private async Task MinuteChangedAsync()
     {
+        if (_minuteAsString.Contains(':') && NoSeconds is false)
+        {
+            _minuteAsString = _minuteAsString.Split(':')[0];
+            await FocusSecondAsync();
+        }
+
         _minute = ParseOrDefault(_minuteAsString, max:59);
+
         await ValueChangedAsync();
     }
 
