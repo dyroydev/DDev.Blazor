@@ -24,11 +24,11 @@ public partial class BottomSheet
     /// <returns>A <see cref="Task"/> that completes when the sheet is closed.</returns>
     public async Task ShowAsync()
     {
-        _backdrop?.Open();
+        _backdrop?.OpenAsync();
         _openTaskSource?.TrySetResult();
         _openTaskSource = new TaskCompletionSource();
         await _openTaskSource.Task;
-        _backdrop?.Close();
+        _backdrop?.CloseAsync();
     }
 
     /// <summary>

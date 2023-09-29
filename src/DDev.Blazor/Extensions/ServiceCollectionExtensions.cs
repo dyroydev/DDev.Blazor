@@ -16,6 +16,8 @@ public static class ServiceCollectionExtensions
     /// The following services will be available:
     /// <list type="bullet">
     /// <item><see cref="IMessageBox"/> (Scoped)</item>
+    /// <item><see cref="IKeyBindingsFactory"/> (Scoped)</item>
+    /// <item><see cref="IKeyBindings"/> (Transient, must be disposed after use)</item>
     /// </list>
     /// </remarks>
     public static IServiceCollection AddDDevBlazor(this IServiceCollection services)
@@ -23,9 +25,15 @@ public static class ServiceCollectionExtensions
         return services
             .AddScoped<PortalRegistry>()
             .AddScoped<DDevTools>()
+            .AddScoped<BackdropStack>()
+            .AddScoped<IKeyBindingsFactory, KeyBindingsFactoryInternal>()
+            .AddTransient<IKeyBindings>(sp => sp.GetRequiredService<IKeyBindingsFactory>().ForDocument())
             .AddDDevBlazorTool<IMessageBox, MessageBoxInternal>();
     }
 
+    /// <summary>
+    /// Adds a internal tool to the service collection. The tool must be made available from within <see cref="Components.DDevBlazor"/>.
+    /// </summary>
     private static IServiceCollection AddDDevBlazorTool<TService, TImplementation>(this IServiceCollection services) where TImplementation : TService where TService : class
     {
         return services.AddScoped<TService>(sp => sp.GetRequiredService<DDevTools>().Get<TImplementation>());

@@ -8,6 +8,7 @@
 	  <Description>Common UI components and blazor utilities for use in DDev blazor applucations.</Description>
 	  <RepositoryUrl>https://github.com/dyroydev/DDev.Blazor.git</RepositoryUrl>
 	  <RepositoryType>git</RepositoryType>
+	  <PackageReadmeFile>readme.md</PackageReadmeFile>
   </PropertyGroup>	
 
   <PropertyGroup>
@@ -22,16 +23,16 @@
     <SupportedPlatform Include="browser" />
   </ItemGroup>
 
+	<ItemGroup>
+		<None Include="$(SolutionDir)readme.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.11" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Components\Input\Button.razor" />
   </ItemGroup>
 
 </Project>

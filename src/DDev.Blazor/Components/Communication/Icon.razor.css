@@ -1,8 +1,16 @@
 ﻿.icon {
-    font-weight: var(--size, 1em);
+    font-size: var(--size, 2em);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .icon[tabindex] {
     cursor: pointer;
     outline-color: var(--primary);
+}
+
+.icon[tabindex]:hover,
+.icon[tabindex]:focus-visible {
+    color: var(--primary);
 }

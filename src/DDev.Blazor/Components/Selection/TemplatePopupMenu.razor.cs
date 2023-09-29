@@ -3,6 +3,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace DDev.Blazor.Components.Selection;
 
+/// <summary>
+/// A templated <see cref="Menu"/> contained in a <see cref="Popup"/>.
+/// </summary>
 public partial class TemplatePopupMenu<T>
 {
     /// <inheritdoc cref="Menu.ChildContent" />

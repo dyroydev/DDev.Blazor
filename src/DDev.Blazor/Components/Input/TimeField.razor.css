@@ -1,0 +1,11 @@
+﻿.text-field__value {
+    width: 2ch;
+    flex-grow: 0;
+    justify-content: center;
+}
+
+.time-field__separator {
+    display: flex;
+    align-items: center;
+    font-size: 1.5em;
+}

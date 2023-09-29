@@ -1,4 +1,6 @@
-﻿namespace DDev.Blazor.Components.Communication;
+﻿using Microsoft.AspNetCore.Components.Web;
+
+namespace DDev.Blazor.Components.Communication;
 
 /// <summary>
 /// Icons represent concepts, objects, or actions, and have semantic purpose within a layout. They should always be recognizable, functional, and easily understood.
@@ -30,4 +32,10 @@ public partial class Icon
     /// Value given to <c>"id"</c>-attribute on icon element.
     /// </summary>
     [Parameter] public string Id { get; set; } = ComponentId.New();
+
+    private async Task OnKeyDown(KeyboardEventArgs args)
+    {
+        if (args.Key == " " || args.Key == "Enter")
+            await OnClick.InvokeAsync();
+    }
 }

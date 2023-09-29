@@ -44,14 +44,22 @@ public readonly struct CssStyle
     }
 
     /// <summary>
+    /// Adds a CSS style and a semicolon.
+    /// </summary>
+    /// <param name="style">CSS style.</param>
+    public CssStyle Add(object? style)
+    {
+        if (style is not null)
+            _sb.Append(style).Append(';');
+        return this;
+    }
+
+    /// <summary>
     /// Adds styles from <c>"style"</c>-key if exists.
     /// </summary>
     public CssStyle Add(IReadOnlyDictionary<string, object?>? attributes)
     {
-        var style = attributes?.GetValueOrDefault("style");
-        if (style is not null)
-            _sb.Append(style).Append(';');
-        return this;
+        return Add(attributes?.GetValueOrDefault("style"));
     }
 
     /// <summary>

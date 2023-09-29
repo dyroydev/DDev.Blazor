@@ -62,21 +62,25 @@ public partial class Dialog
         if (_source is not null && _source.TrySetCanceled())
             throw new InvalidOperationException("Cannot show dialog when dialog is already open");
 
+        if (_backdrop is null)
+            throw new InvalidOperationException("Is not ready.");
+
         _source = new TaskCompletionSource<object?>();
-        _backdrop?.Open();
+        await _backdrop.OpenAsync();
 
         await Task.Yield();
 
-        await Js.InvokeDDevAsync("focus", "setFocusToFirstChild", _id);
+        await HandleFocusOutBottom();
 
         try
         {
             StateHasChanged();
-            return (T?)await _source.Task;
+            var result = await _source.Task;
+            return result is T tRestult ? tRestult : default;
         }
         finally
         {
-            _backdrop?.Close();
+            await _backdrop.CloseAsync();
         }
     }
 
@@ -92,12 +96,20 @@ public partial class Dialog
 
     private async Task HandleFocusOutTop()
     {
-        await Js.InvokeDDevAsync("focus", "setFocusToLastChild", _id);
+        if (_backdrop?.IsStackTop ?? false)
+            await Js.InvokeDDevAsync("focus", "setFocusToLastChild", _id);
     }
 
     private async Task HandleFocusOutBottom()
     {
-        await Js.InvokeDDevAsync("focus", "setFocusToFirstChild", _id);
+        if (_backdrop?.IsStackTop ?? false)
+            await Js.InvokeDDevAsync("focus", "setFocusToFirstChild", _id);
+    }
+
+    private async Task HandleStackTopChanged(bool isStackTop)
+    {
+        if (isStackTop)
+            await HandleFocusOutBottom();
     }
 
     private void HandleBackdropClick()

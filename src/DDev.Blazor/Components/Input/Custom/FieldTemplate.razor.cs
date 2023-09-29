@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
 
-namespace DDev.Blazor.Components.Input;
+namespace DDev.Blazor.Components.Input.Custom;
 
+/// <summary>
+/// A template for making input-field components. Works well with <see cref="FieldBase{T}"/>
+/// </summary>
+/// <seealso cref="FieldBase{T}"/>
 public partial class FieldTemplate
 {
     /// <summary>
@@ -33,6 +37,11 @@ public partial class FieldTemplate
     [Parameter] public string? ValueId { get; set; }
 
     /// <summary>
+    /// If <see langword="true"/>, the field is invalid.
+    /// </summary>
+    [Parameter] public bool Invalid { get; set; }
+
+    /// <summary>
     /// Id of field element.
     /// </summary>
     [Parameter] public string Id { get; set; } = ComponentId.New();
@@ -47,6 +56,8 @@ public partial class FieldTemplate
     /// </summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
+    [Inject] private IJSRuntime Js { get; set; } = null!;
+
     private async Task HandleKeyDown(KeyboardEventArgs args)
     {
         if (args.Key == "Enter" || args.Key == "Space")
@@ -58,6 +69,10 @@ public partial class FieldTemplate
         if (Disabled)
             return;
 
-        await OnClick.InvokeAsync();
+        if (OnClick.HasDelegate)
+            await OnClick.InvokeAsync();
+
+        else if (await Js.HasFocusAsync(Id) is false)
+            await Js.FocusAsync(ValueId);
     }
 }

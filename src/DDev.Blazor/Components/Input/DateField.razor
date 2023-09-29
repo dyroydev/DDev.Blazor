@@ -1,0 +1,10 @@
+@inherits FieldBase<DateOnly?>
+
+<FieldTemplate Id="@_fieldId" ValueId="@Id" Empty="string.IsNullOrWhiteSpace(_valueAsString)" Disabled="Disabled" Label="@Label" ForceFocused="_popup?.IsVisible ?? false">
+    <input class="text-field__value" type="text" @bind="_valueAsString" @bind:after="HandleStringValueChanged" placeholder="@Placeholder" />
+    <Icon Name="calendar_month" OnClick="ShowPickerAsync" Hint="Show date picker" />
+</FieldTemplate>
+
+<Popup @ref="_popup" VisibleChanged="StateHasChanged">
+    <DatePicker @ref="_picker" @bind-Value="Value" />
+</Popup>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DDev.Blazor.Components.Selection;
 
@@ -52,7 +53,7 @@ public partial class Menu
     /// </summary>
     public async Task FocusAsync()
     {
-        await Js.FocusAsync($"#{Id} li:not([disabled])");
+        await FocusStartAsync();
     }
 
     /// <summary>
@@ -61,5 +62,28 @@ public partial class Menu
     internal async Task NotifyClickedAsync(Option option)
     {
         await OnClickOption.InvokeAsync(option);
+    }
+
+    internal async Task HandleNavigationAsync(Option option, int direction)
+    {
+        if (await Js.InvokeDDevAsync<bool>("focus", direction > 0 ? "setFocusToNext" : "setFocusToPrevious", option.Id))
+        {
+            // If focus navigation was successful.
+            return;
+        }
+
+        await (direction > 0
+            ? FocusStartAsync()
+            : FocusEndAsync());
+    }
+
+    internal async Task FocusStartAsync()
+    {
+        await Js.InvokeDDevAsync("focus", "setFocusToFirstChild", Id);
+    }
+
+    internal async Task FocusEndAsync()
+    {
+        await Js.InvokeDDevAsync("focus", "setFocusToLastChild", Id);
     }
 }

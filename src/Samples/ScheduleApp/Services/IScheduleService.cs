@@ -1,4 +1,5 @@
 ﻿using ScheduleApp.Models;
+using System.Diagnostics;
 
 namespace ScheduleApp.Services;
 
@@ -10,6 +11,7 @@ public interface IScheduleService
     Task DeleteScheduleAsync(ScheduleVm schedule, CancellationToken cancellationToken = default);
 }
 
+[DebuggerDisplay($"{{{nameof(Id)}}} - {{{nameof(Name)}}}")]
 public class EventVm
 {
     public Guid Id { get; set; }

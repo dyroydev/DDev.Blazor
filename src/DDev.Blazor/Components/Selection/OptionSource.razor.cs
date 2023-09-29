@@ -1,5 +1,9 @@
 ﻿namespace DDev.Blazor.Components.Selection;
 
+/// <summary>
+/// Generates a <see cref="Option"/> for each item in <see cref="Source"/>.
+/// </summary>
+/// <typeparam name="T">Type of item in <see cref="Source"/>.</typeparam>
 [CascadingTypeParameter(nameof(T))]
 public partial class OptionSource<T>
 {

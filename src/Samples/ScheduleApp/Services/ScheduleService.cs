@@ -1,12 +1,12 @@
-﻿using ScheduleApp.Models;
+﻿using Common;
 
 namespace ScheduleApp.Services;
 
 public class ScheduleService : IScheduleService
 {
-    private readonly IStorage _storage;
+    private readonly IKeyValueDb _storage;
 
-    public ScheduleService(IStorage storage)
+    public ScheduleService(IKeyValueDb storage)
     {
         _storage = storage;
     }

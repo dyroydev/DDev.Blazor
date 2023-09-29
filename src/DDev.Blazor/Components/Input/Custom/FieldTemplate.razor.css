@@ -9,17 +9,23 @@
     display: flex;
     align-items: center;
     outline: none;
+    width: 100%;
+    padding: 9px 0;
 }
 
 ::deep .text-field__value::placeholder {
     transition: opacity 100ms ease-in-out;
 }
 
+::deep .text-field > .icon {
+    align-self: center;
+}
+
 .text-field {
     border: 1px solid var(--disabled);
     border-radius: var(--component-radius);
     display: flex;
-    height: 40px;
+    min-height: 40px;
     padding: 0 11px;
     box-sizing: border-box;
     position: relative;
@@ -48,9 +54,10 @@ label {
     top: 50%;
     transform: translateY(-50%);
     font-size: inherit;
+    color: var(--on-disabled);
 }
 
-.text-field[empty]:not(:focus-within, [focused])) input::placeholder {
+::deep.text-field[empty]:not(:focus-within, [focused]) .text-field__value::placeholder {
     opacity: 0;
 }
 

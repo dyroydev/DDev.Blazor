@@ -24,7 +24,7 @@
                 {
                     var date = week.AddDays(d);
                     var items = _items.GetValueOrDefault(date) ?? new List<ScheduleSourceItem>();
-                    <article class="week-schedule__day">
+                    <article class="week-schedule__day" @onclick="() => ClickDateAsync(date)">
                         <section class="week-schedule__day-title" today="@(date == _today)" week-of-year="@weekOfYear">
                             @if (date == _today)
                             {

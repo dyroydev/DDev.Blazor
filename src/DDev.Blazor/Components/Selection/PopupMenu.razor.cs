@@ -1,5 +1,10 @@
-﻿namespace DDev.Blazor.Components.Selection;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace DDev.Blazor.Components.Selection;
+
+/// <summary>
+/// A <see cref="Menu"/> contained in a <see cref="Popup"/>.
+/// </summary>
 public partial class PopupMenu
 {
     /// <inheritdoc cref="Menu.ChildContent" />

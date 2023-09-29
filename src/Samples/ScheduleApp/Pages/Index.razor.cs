@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 using ScheduleApp.Models;
 using ScheduleApp.Services;
 
@@ -103,9 +104,23 @@ public partial class Index
             _selectedScheduleIds.Add(schedule.Id);
     }
 
-    private async Task ClickEvent(EventVm eventVm)
+    private async Task ClickEvent(ScheduleVm schedule, EventVm eventVm)
     {
-        await _editEventDialog!.EditAsync(eventVm);
+        await _editEventDialog!.EditAsync(schedule, eventVm);
+    }
+
+    private async Task ClickDate(DateOnly date)
+    {
+        await _editEventDialog!.CreateNewAsync(date);
+    }
+
+    private async Task ClickDateTime(DateOnly date, TimeOnly time)
+    {
+        var interval = TimeSpan.FromMinutes(90);
+        var clickedInterval = (int)(time.ToTimeSpan() / interval);
+        time = TimeOnly.FromTimeSpan(interval * clickedInterval);
+
+        await _editEventDialog!.CreateNewAsync(date, time);
     }
 
     private void ClickOpenMenu()

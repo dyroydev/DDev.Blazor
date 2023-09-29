@@ -2,6 +2,10 @@
 
 namespace DDev.Blazor.Components.Input;
 
+/// <summary>
+/// A field for values of type <typeparamref name="T"/>. The user selects a single value from a predefined set.
+/// </summary>
+/// <typeparam name="T">Type of value.</typeparam>
 [CascadingTypeParameter(nameof(T))]
 public partial class SelectField<T>
 {

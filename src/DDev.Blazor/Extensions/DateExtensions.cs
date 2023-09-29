@@ -27,6 +27,14 @@ public static class DateExtensions
     }
 
     /// <summary>
+    /// Returns the first date in the year that contains <paramref name="date"/>.
+    /// </summary>
+    public static DateOnly GetStartOfYear(this DateOnly date)
+    {
+        return new DateOnly(date.Year, 1, 1);
+    }
+
+    /// <summary>
     /// Returns the week of year the given <paramref name="date"/> is in.
     /// </summary>
     public static int GetWeekOfYear(this DateOnly date, CultureInfo? culture = null)

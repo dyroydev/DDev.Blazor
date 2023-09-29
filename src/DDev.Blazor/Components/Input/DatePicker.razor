@@ -1,22 +1,22 @@
 @inherits FieldBase<DateOnly?>
 
-<div class="date-picker" @onclick="ClickPicker">
+<div class="date-picker" id="@Id" @onclick="ClickPicker">
     <div class="date-picker__actions">
         <section>
             <Icon Name="arrow_back_ios" OnClick="PreviousMonth" id="@(Id + "__previous-month")" />
-            <div class="date-picker__toggle" tabindex="0" role="button" selected="@_isMonthsVisible" @onclick="ToggleMonths" @onclick:stopPropagation>
+            <button id="@(Id + "__toggle-month")" type="button" class="date-picker__toggle" selected="@_isMonthsVisible" @onclick="ToggleMonths" @onclick:stopPropagation>
                 @Month.ToString("MMM").ToTitleInvariant()
                 <Icon Name="arrow_drop_down" Size="1.4em" />
-            </div>
-            <Icon Name="arrow_forward_ios" OnClick="NextMonth" />
+            </button>
+            <Icon Name="arrow_forward_ios" OnClick="NextMonth" id="@(Id + "__next-month")" />
         </section>
 
         <section>
             <Icon Name="arrow_back_ios" OnClick="PreviousYear" />
-            <div class="date-picker__toggle" tabindex="0" role="button" selected="@_isYearsVisible" @onclick="ToggleYears" @onclick:stopPropagation>
+            <button id="@(Id + "__toggle-year")" type="button" class="date-picker__toggle" selected="@_isYearsVisible" @onclick="ToggleYears" @onclick:stopPropagation>
                 @Month.ToString("yyyy")
                 <Icon Name="arrow_drop_down" Size="1.4em" />
-            </div>
+            </button>
             <Icon Name="arrow_forward_ios" OnClick="NextYear" />
         </section>
     </div>
@@ -32,7 +32,7 @@
             @for (var i = 0; i < _dayCount; i++)
             {
                 var date = _startDay.AddDays(i);
-                <div class="date-picker__date" id="@GetDateId(date)" tabindex="0" title="@GetDateTitle(date)" outside="@(date.Month != Month.Month)" today="@(date == _today)" @onclick="() => ClickDate(date)" selected="@IsDateSelected(date)">
+                <div @key="date" class="date-picker__date" id="@GetDateId(date)" tabindex="0" title="@GetDateTitle(date)" outside="@(date.Month != Month.Month)" today="@(date == _today)" @onclick="() => ClickDate(date)" @onclick:stopPropagation selected="@IsDateSelected(date)">
                     @date.Day
                 </div>
             }
@@ -40,10 +40,10 @@
     </Collapse>
     <Collapse Expanded="_isMonthsVisible">
         <div class="date-picker__months">
-            @for (var i = 1; i <= 12; i++)
+            @for (var i = 0; i < _monthCount; i++)
             {
-                var date = new DateOnly(Month.Year, i, 1);
-                <div class="date-picker__month" id="@GetMonthId(date)" tabindex="0" title="@(date.ToString("MMMM yyyy").ToTitleInvariant())" today="@(date.Month == _today.Month)" @onclick="() => ClickMonth(date)">
+                var date = _startMonth.AddMonths(i).AddDays(Month.Day - 1);
+                <div @key="date" class="date-picker__month" id="@GetMonthId(date)" tabindex="0" title="@(date.ToString("MMMM yyyy").ToTitleInvariant())" today="@(date.Month == _today.Month)" @onclick="() => ClickMonth(date)" @onclick:stopPropagation>
                     @date.ToString("MMMM").ToTitleInvariant()
                 </div>
             }
@@ -51,10 +51,10 @@
     </Collapse>
     <Collapse Expanded="_isYearsVisible">
         <div class="date-picker__years">
-            @for (var i = 0; i < 15; i++)
+            @for (var i = 0; i < _yearCount; i++)
             {
-                var date = Month.GetStartOfDecade().AddYears(i).AddMonths(Month.Month - 1);
-                <div class="date-picker__year" id="@GetYearId(date)" tabindex="0" title="@(date.ToString("yyyy"))" today="@(date.Year == _today.Year)" @onclick="() => ClickMonth(date)">
+                var date = _startYear.AddYears(i).AddMonths(Month.Month - 1).AddDays(Month.Day - 1);
+                <div @key="date" class="date-picker__year" id="@GetYearId(date)" tabindex="0" title="@(date.ToString("yyyy"))" today="@(date.Year == _today.Year)" @onclick="() => ClickYear(date)" @onclick:stopPropagation>
                     @date.ToString("yyyy")
                 </div>
             }

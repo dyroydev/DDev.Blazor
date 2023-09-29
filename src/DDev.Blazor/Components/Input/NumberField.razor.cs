@@ -2,6 +2,14 @@
 
 namespace DDev.Blazor.Components.Input;
 
+/// <summary>
+/// A field for numeric values.
+/// </summary>
+/// <typeparam name="T">Numeric type of value.</typeparam>
+/// <seealso cref="DateField"/>
+/// <seealso cref="SelectField{T}"/>
+/// <seealso cref="TextAreaField"/>
+/// <seealso cref="TextField"/>
 public partial class NumberField<T> where T : INumber<T>, IMinMaxValue<T>
 {
     /// <summary>

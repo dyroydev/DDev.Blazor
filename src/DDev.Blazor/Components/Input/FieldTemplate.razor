@@ -1,8 +1,0 @@
-<div role="@(OnClick.HasDelegate ? "button" : "textbox")" class="text-field" empty="@Empty" disabled="@Disabled" @onclick="HandleClick" @onkeydown="HandleKeyDown" id="@Id" focused="@ForceFocused">
-    @if (string.IsNullOrWhiteSpace(Label) is false)
-    {
-        <label for="@ValueId">@Label</label>
-    }
-
-    @ChildContent
-</div>

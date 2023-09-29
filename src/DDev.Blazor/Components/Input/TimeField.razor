@@ -1,0 +1,12 @@
+@inherits FieldBase<TimeOnly?>
+
+<FieldTemplate ValueId="@HourId" Disabled="@Disabled" Label="@Label" Empty="IsEmpty" OnClick="FocusAsync">
+    <input class="text-field__value" type="text" inputmode="tel" id="@HourId" @bind="_hourAsString" @bind:after="HourChangedAsync" @onfocus="FocusHourAsync" placeholder="00" @onclick:stopPropagation/>
+    <span class="time-field__separator">@Separator</span>
+    <input class="text-field__value" type="text" inputmode="tel" id="@MinuteId" @bind="_minuteAsString" @bind:after="MinuteChangedAsync" @onfocus="FocusMinuteAsync" placeholder="00" @onclick:stopPropagation />
+    @if (NoSeconds is false)
+    {
+        <span class="time-field__separator">@Separator</span>
+        <input class="text-field__value" type="text" inputmode="tel" id="@SecondId" @bind="_secondAsString" @bind:after="SecondChangedAsync" @onfocus="FocusSecondAsync" placeholder="00" @onclick:stopPropagation />
+    }
+</FieldTemplate>

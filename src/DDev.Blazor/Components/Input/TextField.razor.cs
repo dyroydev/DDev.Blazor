@@ -1,7 +1,7 @@
 ﻿namespace DDev.Blazor.Components.Input;
 
 /// <summary>
-/// An input component which holds a <see cref="string"/> value.
+/// A field for <see cref="string"/> values. (single line)
 /// </summary>
 public partial class TextField
 {

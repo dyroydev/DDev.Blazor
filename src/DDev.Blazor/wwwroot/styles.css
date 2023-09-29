@@ -8,6 +8,8 @@
     --on-surface: #222;
     --primary: #5959f7;
     --on-primary: white;
+    --danger: red;
+    --on-danger: white;
     --disabled: lightgray;
     --on-disabled: gray;
     --component-radius: 8px;

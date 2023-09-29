@@ -1,9 +1,19 @@
 @typeparam T
 @inherits FieldBase<T>
 
-<FieldTemplate Id="@_fieldId" Empty="Value is null" Disabled="Disabled" Label="@Label" ForceFocused="_menu?.IsVisible ?? false" OnClick="ClickAsync">
+<FieldTemplate Id="@_fieldId" Empty="Value is null" Disabled="Disabled" Label="@Label" ForceFocused="_menu?.IsVisible ?? false" OnClick="ClickAsync" Invalid="IsFieldInvalid">
     <span class="text-field__value" tabindex="@(Disabled ? null : "0")" id="@Id">
-        @Value?.ToString()
+        @{
+            var option = FindOption(Value);
+        }
+        @if (option is not null)
+        {
+            @option?.ChildContent
+        }
+        else
+        {
+            @Value?.ToString()
+        }
     </span>
     <span class="select-field__button" flip="@_menu?.IsVisible">
         <Icon Name="arrow_drop_down" />

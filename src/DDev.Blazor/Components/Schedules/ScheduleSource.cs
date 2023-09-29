@@ -9,26 +9,30 @@ public class ScheduleSource<T> : ComponentBase, IScheduleSource, IDisposable
     /// <summary>
     /// Template for schedule items fetched by this source.
     /// </summary>
-    [Parameter, EditorRequired] public RenderFragment<T> ChildContent { get; set; } = _ => throw new InvalidOperationException($"Value for ChildContent parameter must be provided.");
+    [Parameter, EditorRequired] public RenderFragment<T> ChildContent { get; set; } = _ => throw new InvalidOperationException($"Value for {nameof(ChildContent)} parameter must be provided.");
 
     /// <summary>
-    /// Gets the date from the schedule item.
+    /// Gets the date and time from the schedule item.
     /// </summary>
-    [Parameter, EditorRequired] public Func<T, DateOnly> Date { get; set; } = _ => throw new InvalidOperationException($"Value for Date parameter must be provided.");
-
-    /// <summary>
-    /// Gets the time from the schedule item.
-    /// </summary>
-    [Parameter] public Func<T, TimeOnly?> Time { get; set; } = _ => null;
+    /// <remarks>
+    /// Time is ignored when <see cref="AllDay"/> returns <see langword="true"/>.
+    /// </remarks>
+    [Parameter, EditorRequired] public Func<T, DateTimeOffset> DateTime { get; set; } = _ => throw new InvalidOperationException($"Value for {nameof(DateTime)} parameter must be provided.");
 
     /// <summary>
     /// Gets the duration from the schedule item.
     /// </summary>
+    /// <remarks>
+    /// Ignored when <see cref="AllDay"/> returns <see langword="true"/>.
+    /// </remarks>
     [Parameter] public Func<T, TimeSpan?> Duration { get; set; } = _ => null;
     
     /// <summary>
     /// Gets a boolean indicating if item is a special all-day item.
     /// </summary>
+    /// <remarks>
+    /// If <see langword="true"/>, time and duration are ignored.
+    /// </remarks>
     [Parameter] public Func<T, bool> AllDay { get; set; } = _ => false;
 
     /// <summary>
@@ -102,8 +106,8 @@ public class ScheduleSource<T> : ComponentBase, IScheduleSource, IDisposable
     (
         item!,
         ChildContent(item),
-        Date(item),
-        Time(item) ?? TimeOnly.MinValue,
+        DateOnly.FromDateTime(DateTime(item).DateTime),
+        TimeOnly.FromDateTime(DateTime(item).DateTime),
         Duration(item) ?? TimeSpan.FromHours(1),
         AllDay(item)
     );

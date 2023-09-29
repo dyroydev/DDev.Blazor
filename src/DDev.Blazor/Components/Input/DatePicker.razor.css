@@ -27,6 +27,8 @@
 .date-picker__toggle {
     --transition-duration: 150ms;
 
+    appearance: none;
+    font: inherit;
     display: grid;
     align-items: center;
     grid-template-columns: 1fr auto;

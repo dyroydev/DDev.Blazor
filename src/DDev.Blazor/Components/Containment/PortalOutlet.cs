@@ -31,7 +31,7 @@ public sealed class PortalOutlet : ComponentBase, IDisposable
     /// <inheritdoc />
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
-        foreach (var portal in Sources)
+        foreach (var portal in Sources.OrderBy(s => s.IdInOutlet))
         {
             builder.AddContent(portal.IdInOutlet, portal.ChildContent);
         }

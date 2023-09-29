@@ -1,4 +1,6 @@
-﻿namespace DDev.Blazor.Components.Containment;
+﻿using DDev.Blazor.Internal;
+
+namespace DDev.Blazor.Components.Containment;
 
 /// <summary>
 /// A backdrop used for modal and dialog-like components.
@@ -14,6 +16,15 @@ public partial class Backdrop
     /// Callback invoked when the backdrop is clicked.
     /// </summary>
     [Parameter] public EventCallback OnClick { get; set; }
+
+    /// <summary>
+    /// Callback invoked when the backdrop-stack has changed.
+    /// </summary>
+    /// <remarks>
+    /// Arguments indicates if this backdrop is the top of the stack or not.<br/>
+    /// You can also see <see cref="IsStackTop"/>.
+    /// </remarks>
+    [Parameter] public EventCallback<bool> OnStackTopChanged { get; set; }
 
     /// <summary>
     /// Callback invoked when the focus has left the backdrop content.
@@ -32,27 +43,37 @@ public partial class Backdrop
 
     [Inject] IJSRuntime? Js { get; set; }
 
+    [Inject] BackdropStack Stack { get; set; } = null!;
+
+    /// <summary>
+    /// <see langword="true"/> if this backdrop is currently the topmost backdrop.
+    /// </summary>
+    public bool IsStackTop => _isStackTop;
+
     private readonly string _backdropId = ComponentId.New();
     private PortalSource? _portal;
     private bool _isOpen;
     private bool _isRendered;
+    private bool _isStackTop;
 
     /// <summary>
     /// Opens the backdrop and shows its content.
     /// </summary>
-    public void Open()
+    public async Task OpenAsync()
     {
-        _portal?.MoveToEnd();
         _isOpen = true;
         _isRendered = _isOpen;
         StateHasChanged();
+
+        await Stack.PushAsync(this);
     }
 
     /// <summary>
     /// Closes the backdrop and hides its content.
     /// </summary>
-    public void Close()
+    public async Task CloseAsync()
     {
+        await Stack.PushAsync(this);
         _isOpen = false;
         StateHasChanged();
 
@@ -102,5 +123,19 @@ public partial class Backdrop
             _isRendered = false;
             StateHasChanged();
         }
+    }
+
+    /// <summary>
+    /// Callback invoked by <see cref="BackdropStack"/> when this backdrop is at the top of the stack.
+    /// </summary>
+    internal async Task NotifyStackTopAsync(bool isTopOfStack)
+    {
+        _isStackTop = isTopOfStack;
+        if (isTopOfStack)
+            _portal?.MoveToEnd();
+
+        StateHasChanged();
+
+        await OnStackTopChanged.InvokeAsync(isTopOfStack);
     }
 }

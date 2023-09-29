@@ -1,4 +1,4 @@
-﻿<Dialog @ref="_dialog">
+﻿<Dialog @ref="_dialog" Dismissable>
     <Header>
         @if (_original is null)
         {
@@ -10,18 +10,35 @@
         }
     </Header>
     <Content>
+        <SelectField Label="Schedule" @bind-Value="_model.Schedule">
+            <OptionSource Source="_schedules" Context="schedule">@schedule.Name</OptionSource>
+        </SelectField>
+        <br/>
         <TextField Label="Name" @bind-Value="_model.Name" />
+        <br />
+        <TextAreaField Label="Description" @bind-Value="_model.Description" />
+        <br />
+        <TextField Label="Location" @bind-Value="_model.Location" />
         <ColorPicker @bind-Value="_model.Color" />
 
-        <SelectField Label="Every" @bind-Value="_model.RepeatType">
-            <OptionSource Source="Enum.GetValues<RepeaterType>()" />
-        </SelectField>
+        <div class="pair">
 
-        <NumberField Label="Period" @bind-Value="_model.RepeatPeriod" Min="1" Default="1" />
+            <SelectField Label="Every" @bind-Value="_model.RepeatType">
+                <OptionSource Source="Enum.GetValues<RepeaterType>()" />
+            </SelectField>
 
-        <DatePicker />
+            <NumberField Label="Period" @bind-Value="_model.RepeatPeriod" Min="1" Default="1" />
+
+            <DateField Label="Date" @bind-Value="_model.Date" />
+
+            <TimeField Label="Time" @bind-Value="_model.Time" NoSeconds />
+
+        </div>
 
     </Content>
+    <SecondaryActions>
+        <Button Danger OnClick="DeleteAsync">Delete</Button>
+    </SecondaryActions>
     <Actions>
         <Button OnClick="() => _dialog!.CloseWithResult(false)">Cancel</Button>
         <Button Primary OnClick="() => _dialog!.CloseWithResult(true)">

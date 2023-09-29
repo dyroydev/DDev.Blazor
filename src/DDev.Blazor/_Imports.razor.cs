@@ -3,6 +3,7 @@ global using DDev.Blazor.Extensions;
 global using DDev.Blazor.Components.Containment;
 global using DDev.Blazor.Components.Communication;
 global using DDev.Blazor.Components.Input;
+global using DDev.Blazor.Components.Input.Custom;
 global using DDev.Blazor.Components.Utilities;
 
 global using Microsoft.AspNetCore.Components;

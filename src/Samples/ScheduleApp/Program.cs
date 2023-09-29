@@ -1,7 +1,5 @@
+using Common;
 using ScheduleApp.Services;
-
-// This program writes to the desktop folder.
-var localStorageDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\DDev\\ScheduleApp";
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +8,8 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddDDevBlazor();
 
+builder.Services.AddSampleUtilitiesForBlazorServerSide(appName:"ScheduleApp");
 builder.Services.AddSingleton<IScheduleService, ScheduleService>();
-builder.Services.AddSingleton<IStorage>(sp => new LocalFileSystemStorage(localStorageDirectory));
 
 var app = builder.Build();
 

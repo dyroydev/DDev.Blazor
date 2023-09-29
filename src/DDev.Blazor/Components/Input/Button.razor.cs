@@ -31,6 +31,11 @@ public partial class Button
     [Parameter] public bool Primary { get; set; }
 
     /// <summary>
+    /// If <see langword="true"/>, the button is a dangerous button.
+    /// </summary>
+    [Parameter] public bool Danger { get; set; }
+
+    /// <summary>
     /// If <see langword="true"/>, the button is selected.
     /// </summary>
     [Parameter] public bool? Selected { get; set; }

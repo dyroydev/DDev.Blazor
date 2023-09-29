@@ -1,7 +1,13 @@
 ﻿namespace DDev.Blazor.Extensions;
 
+/// <summary>
+/// Useful extension methods for <see cref="IJSObjectReference"/>.
+/// </summary>
 internal static class JsObjectReferenceExtensions
 {
+    /// <summary>
+    /// Returns a disposable wrapper for <paramref name="jsObject"/>. Assumes <paramref name="jsObject"/> has a <c>dispose()</c> method.
+    /// </summary>
     public static IDisposable ToDisposable(this IJSObjectReference jsObject)
     {
         return new DisposableJsObjectReference(jsObject);

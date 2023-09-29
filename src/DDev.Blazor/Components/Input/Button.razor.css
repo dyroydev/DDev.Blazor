@@ -49,6 +49,24 @@ button[primary]:active {
     border-color: color-mix(in srgb, var(--primary) 50%, currentColor);
 }
 
+button[danger] {
+    color: var(--on-danger);
+    background-color: var(--danger);
+    border-color: var(--danger);
+}
+
+button[danger]:focus,
+button[danger]:hover {
+    background-color: color-mix(in srgb, var(--danger) 70%, currentColor);
+    border-color: color-mix(in srgb, var(--danger) 70%, currentColor);
+}
+
+button[danger]:active {
+    background-color: color-mix(in srgb, var(--danger) 50%, currentColor);
+    border-color: color-mix(in srgb, var(--danger) 50%, currentColor);
+}
+
+button[danger][disabled],
 button[primary][disabled] {
     color: var(--on-disabled);
     background-color: lightgray;

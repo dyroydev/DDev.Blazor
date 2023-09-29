@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
+using System.Diagnostics;
 using System.Linq.Expressions;
 
-namespace DDev.Blazor.Components.Input;
+namespace DDev.Blazor.Components.Input.Custom;
 
 /// <summary>
 /// Base class for input field components.<br/>
 /// This components integrates with <see cref="Microsoft.AspNetCore.Components.Forms.EditContext"/> which is optionally supplied by a cascading parameter.
 /// </summary>
+[DebuggerDisplay($"{{{nameof(Label)}}} {{GetType().Name}}")]
 public abstract class FieldBase<T> : ComponentBase, IDisposable
 {
     /// <summary>
@@ -55,11 +57,11 @@ public abstract class FieldBase<T> : ComponentBase, IDisposable
     /// <see langword="true"/> if field is validated and field was not valid.
     /// </summary>
     /// <remarks>Always <see langword="false"/> if <see cref="EditContext"/> is <see langword="null"/>.</remarks>
-    protected bool IsInvalid { get; private set; }
+    protected bool IsFieldInvalid { get; private set; }
 
+    private readonly List<IDisposable> _disposables = new();
     private EditContext? _editContext;
     private T? _value;
-
 
     private void SetEditContext(EditContext? editContext)
     {
@@ -82,10 +84,10 @@ public abstract class FieldBase<T> : ComponentBase, IDisposable
 
         var fieldId = FieldIdentifier.Create(ValueExpression);
         var isInvalid = _editContext.GetValidationMessages(fieldId).Any();
-        if (isInvalid == IsInvalid)
+        if (isInvalid == IsFieldInvalid)
             return;
 
-        IsInvalid = isInvalid;
+        IsFieldInvalid = isInvalid;
         OnInvalidChanged();
         OnInvalidChangedAsync().Discard($"Failed to notify {nameof(OnInvalidChanged)}");
     }
@@ -96,6 +98,17 @@ public abstract class FieldBase<T> : ComponentBase, IDisposable
     public virtual async Task FocusAsync()
     {
         await Js.FocusAsync(Id);
+    }
+
+    /// <summary>
+    /// Automatically disposes <paramref name="utility"/> when the component is disposed.
+    /// </summary>
+    /// <typeparam name="TUtility">Type of utility.</typeparam>
+    /// <returns><paramref name="utility"/>.</returns>
+    protected TUtility Use<TUtility>(TUtility utility) where TUtility : IDisposable
+    {
+        _disposables.Add(utility);
+        return utility;
     }
 
     /// <summary>
@@ -113,6 +126,7 @@ public abstract class FieldBase<T> : ComponentBase, IDisposable
         _value = value;
         OnValueChanged();
         await (OnValueChangedAsync() ?? Task.CompletedTask);
+        StateHasChanged();
         await ValueChanged.InvokeAsync(_value);
     }
 
@@ -122,6 +136,8 @@ public abstract class FieldBase<T> : ComponentBase, IDisposable
     public void Dispose()
     {
         SetEditContext(null);
+        foreach (var disposable in _disposables)
+            disposable.Dispose();
         Dispose(true);
         GC.SuppressFinalize(this);
     }
@@ -145,13 +161,13 @@ public abstract class FieldBase<T> : ComponentBase, IDisposable
     protected virtual Task OnValueChangedAsync() => Task.CompletedTask;
 
     /// <summary>
-    /// Callback invoked after <see cref="IsInvalid"/> has changed.
+    /// Callback invoked after <see cref="IsFieldInvalid"/> has changed.
     /// </summary>
     /// <remarks>Component is not automatically re-rendered after this callback.</remarks>
     protected virtual void OnInvalidChanged() { }
 
     /// <summary>
-    /// Callback invoked after <see cref="IsInvalid"/> has changed.
+    /// Callback invoked after <see cref="IsFieldInvalid"/> has changed.
     /// </summary>
     /// <remarks>Component is not automatically re-rendered after this callback.</remarks>
     protected virtual Task OnInvalidChangedAsync() => Task.CompletedTask;

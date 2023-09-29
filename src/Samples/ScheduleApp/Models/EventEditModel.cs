@@ -1,4 +1,5 @@
 ﻿using ScheduleApp.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace ScheduleApp.Models;
 
@@ -24,28 +25,30 @@ public class EventEditModel : EditModel<EventVm>
 
     public string? Location
     {
-        get => Get(x => x.Description);
-        set => Set(x => x.Description, value);
+        get => Get(x => x.Location);
+        set => Set(x => x.Location, value);
     }
 
-    public DateOnly Date
+    public DateOnly? Date
     {
         get => DateOnly.FromDateTime(Get(x => x.Repeater).Start.DateTime);
         set
         {
+            var date = value ?? DateOnly.MinValue;
             var repeater = Model?.Repeater ?? Repeater.Never;
-            repeater.Start = new DateTimeOffset(value.Year, value.Month, value.Day, repeater.Start.Hour, repeater.Start.Minute, repeater.Start.Second, repeater.Start.Offset);
+            repeater.Start = new DateTimeOffset(date.Year, date.Month, date.Day, repeater.Start.Hour, repeater.Start.Minute, repeater.Start.Second, repeater.Start.Offset);
             Set(x => x.Repeater, repeater);
         }
     }
 
-    public TimeOnly Time
+    public TimeOnly? Time
     {
         get => TimeOnly.FromDateTime(Get(x => x.Repeater).Start.DateTime);
         set
         {
+            var time = value ?? TimeOnly.MinValue;
             var repeater = Model?.Repeater ?? Repeater.Never;
-            repeater.Start = new DateTimeOffset(repeater.Start.Year, repeater.Start.Month, repeater.Start.Day, value.Hour, value.Minute, value.Second, repeater.Start.Offset);
+            repeater.Start = new DateTimeOffset(repeater.Start.Year, repeater.Start.Month, repeater.Start.Day, time.Hour, time.Minute, time.Second, repeater.Start.Offset);
             Set(x => x.Repeater, repeater);
         }
     }
@@ -70,5 +73,11 @@ public class EventEditModel : EditModel<EventVm>
             repeater.Type = value;
             Set(x => x.Repeater, repeater);
         }
+    }
+
+    [Required]
+    public ScheduleVm? Schedule
+    {
+        get; set;
     }
 }

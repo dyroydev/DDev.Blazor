@@ -7,15 +7,15 @@
 
     <TopAppBar>
 
-        <LeftActions>
+        <Left>
             <IconButton Icon="menu" OnClick="ClickOpenMenu" Hint="Open sidebar" />
-        </LeftActions>
+        </Left>
 
         <Title>
             @GetTitle()
         </Title>
 
-        <RightActions>
+        <Right>
             <ButtonSet>
 
                 @foreach (var mode in Enum.GetValues<ViewMode>())
@@ -24,16 +24,16 @@
                 }
 
             </ButtonSet>
-        </RightActions>
+        </Right>
 
     </TopAppBar>
     <section>
         @if (_viewMode == ViewMode.Week)
         {
-            <DaySchedule StartDay="_startOfWeek" DayCount="7">
+            <DaySchedule StartDay="_startOfWeek" DayCount="7" OnClickTime="dateTime => ClickDateTime(dateTime.Date, dateTime.Time)">
 
-                <ScheduleSource Fetch="GetEventsBetween" Date="context => DateOnly.FromDateTime(context.Time.DateTime)" Time="context => TimeOnly.FromDateTime(context.Time.DateTime)" Duration="context => context.Event.Duration">
-                    <div class="event event--month" style="--color:@(GetColor(context))">
+                <ScheduleSource Fetch="GetEventsBetween" DateTime="context => context.Time.DateTime" Duration="context => context.Event.Duration">
+                    <div class="event event--month" style="--color:@(GetColor(context));" @onclick="() => ClickEvent(context.Schedule, context.Event)" @onclick:stopPropagation>
                         <div class="event__title">@context.Event.Name</div>
                         <div class="event__description">@context.Event.Description</div>
                         <div class="event__location">@context.Event.Location</div>
@@ -44,10 +44,10 @@
         }
         else
         {
-            <WeekSchedule StartWeek="_startOfMonth" WeekCount="5">
+            <WeekSchedule StartWeek="_startOfMonth" WeekCount="5" OnClickDate="ClickDate">
 
-                <ScheduleSource Fetch="GetEventsBetween" Date="context => DateOnly.FromDateTime(context.Time.DateTime)">
-                    <div class="event event--month" style="--color:@(GetColor(context))" @onclick="() => ClickEvent(context.Event)">
+                <ScheduleSource Fetch="GetEventsBetween" DateTime="context => context.Time.DateTime">
+                    <div class="event event--month" style="--color:@(GetColor(context));" @onclick="() => ClickEvent(context.Schedule, context.Event)" @onclick:stopPropagation>
                         <div class="event__title">@context.Event.Name</div>
                         <div class="event__description">@context.Event.Description</div>
                         <div class="event__location">@context.Event.Location</div>

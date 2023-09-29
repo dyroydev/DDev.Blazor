@@ -5,17 +5,26 @@
 /// </summary>
 public static class JsRuntimeExtensions
 {
+    /// <summary>
+    /// Open a js-module from <c>DDev.Blazor</c>.
+    /// </summary>
     internal static async Task<IJSObjectReference> OpenDDevJsModule(this IJSRuntime runtime, string name)
     {
         return await runtime.InvokeAsync<IJSObjectReference>("import", $"./_content/DDev.Blazor/{name}.js");
     }
 
+    /// <summary>
+    /// Invokes a method in a js-module from <c>DDev.Blazor</c>.
+    /// </summary>
     internal static async Task InvokeDDevAsync(this IJSRuntime runtime, string moduleName, string method, params object?[] parameters)
     {
         await using var focusModule = await runtime.OpenDDevJsModule(moduleName);
         await focusModule.InvokeVoidAsync(method, parameters);
     }
 
+    /// <summary>
+    /// Invokes a method in a js-module from <c>DDev.Blazor</c>.
+    /// </summary>
     internal static async Task<T> InvokeDDevAsync<T>(this IJSRuntime runtime, string moduleName, string method, params object?[] parameters)
     {
         await using var focusModule = await runtime.OpenDDevJsModule(moduleName);

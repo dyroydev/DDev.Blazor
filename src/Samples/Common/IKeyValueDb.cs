@@ -1,8 +1,8 @@
 ﻿using System.Text.Json;
 
-namespace ScheduleApp.Services;
+namespace Common;
 
-public interface IStorage
+public interface IKeyValueDb
 {
     Task PutAsync<T>(string key, T value, CancellationToken cancellationToken = default);
 
@@ -13,7 +13,7 @@ public interface IStorage
     Task<List<T>> GetAllAsync<T>(CancellationToken cancellationToken = default);
 }
 
-public class LocalFileSystemStorage : IStorage
+public class FileSystemKeyValueDb : IKeyValueDb
 {
     private readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
     {
@@ -22,7 +22,7 @@ public class LocalFileSystemStorage : IStorage
 
     private readonly string _path;
 
-    public LocalFileSystemStorage(string path)
+    public FileSystemKeyValueDb(string path)
     {
         _path = path;
     }

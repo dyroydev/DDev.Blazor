@@ -1,4 +1,6 @@
-﻿namespace DDev.Blazor.Extensions;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace DDev.Blazor.Extensions;
 
 /// <summary>
 /// Helper extensions for async operations.
@@ -8,8 +10,12 @@ public static class AsyncExtensions
     /// <summary>
     /// Converts the sync <paramref name="action"/> to an async function.
     /// </summary>
-    internal static Func<Task> ToAsync(this Action action)
+    [return: NotNullIfNotNull(nameof(action))]
+    internal static Func<Task>? ToAsync(this Action? action)
     {
+        if (action is null)
+            return null;
+
         return () =>
         {
             try
@@ -27,8 +33,12 @@ public static class AsyncExtensions
     /// <summary>
     /// Converts the sync <paramref name="action"/> to an async function.
     /// </summary>
-    internal static Func<T, Task> ToAsync<T>(this Action<T> action)
+    [return: NotNullIfNotNull(nameof(action))]
+    internal static Func<T, Task>? ToAsync<T>(this Action<T>? action)
     {
+        if (action is null)
+            return null;
+
         return value =>
         {
             try

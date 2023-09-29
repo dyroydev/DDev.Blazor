@@ -46,9 +46,13 @@ public partial class WeekSchedule : IScheduleSourceContainer
 
         _items = results
             .SelectMany(r => r)
-            .OrderBy(i => i.Time)
             .GroupBy(i => i.Date)
-            .ToDictionary(group => group.Key, group => group.ToList());
+            .ToDictionary(group => group.Key, group => group.OrderBy(i => i.Time).ToList());
+    }
+
+    private async Task ClickDateAsync(DateOnly date)
+    {
+        await OnClickDate.InvokeAsync(date);
     }
 
     void IScheduleSourceContainer.AddScheduleSource(IScheduleSource source)

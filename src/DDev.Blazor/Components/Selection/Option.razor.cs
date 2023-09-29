@@ -57,6 +57,8 @@ public partial class Option : IDisposable
     /// </summary>
     [CascadingParameter] private Menu? Menu { get; set; }
 
+    [Inject] private IJSRuntime Js { get; set; } = null!;
+
     /// <summary>
     /// If <see langword="true"/>, the options is rendered as selected.
     /// </summary>
@@ -85,12 +87,27 @@ public partial class Option : IDisposable
     {
         if (args.Key == "Enter" || args.Key == "Space")
             await HandleClick();
+        else
+            await HandleNavigation(args);
     }
 
     private async Task HandleKeyDownHint(KeyboardEventArgs args)
     {
         if (args.Key == "Enter" || args.Key == "Space")
             await HandleClickHint();
+        else
+            await HandleNavigation(args);
+    }
+
+    private async Task HandleNavigation(KeyboardEventArgs args)
+    {
+        if (Menu is null)
+            return;
+
+        if (args.Key == "ArrowUp" || args.Key == "ArrowRight")
+            await Menu.HandleNavigationAsync(this, -1);
+        else if (args.Key == "ArrowDown" || args.Key == "ArrowLeft")
+            await Menu.HandleNavigationAsync(this, 1);
     }
 
     /// <summary>

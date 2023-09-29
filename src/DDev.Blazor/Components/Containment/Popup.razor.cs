@@ -1,5 +1,4 @@
-﻿using DDev.Blazor.Extensions;
-using DDev.Blazor.Services;
+﻿using DDev.Blazor.Services;
 
 namespace DDev.Blazor.Components.Containment;
 
@@ -35,8 +34,8 @@ public partial class Popup : IDisposable
     private bool _isVisible;
     private double _x;
     private double _y;
-    private bool _fullX;
-    private bool _fullY;
+    private bool _overflowX;
+    private bool _overflowY;
     private string? _styles;
 
     /// <summary>
@@ -88,13 +87,16 @@ public partial class Popup : IDisposable
         var viewport = await popupModule.InvokeAsync<PageRectangle>("getViewportBoundingRectangle");
         var popup = await popupModule.InvokeAsync<PageRectangle>("getBoundingRectangle", _popupElement);
 
-        _fullX = 
+        _overflowX = 
             SetIfValid(ref _x, 'x', placement.X, popup.Width, viewport.X, viewport.Width) is false &&
             SetIfValid(ref _x, 'x', placement.X + placement.Width - popup.Width, popup.Width, viewport.X, viewport.Width) is false;
 
-        _fullY =
+        _overflowY =
             SetIfValid(ref _y, 'y', placement.Y + placement.Height, popup.Height, viewport.Y, viewport.Height) is false &&
             SetIfValid(ref _y, 'y', placement.Y - popup.Height, popup.Height, viewport.Y, viewport.Height) is false;
+
+        if (_overflowX) _x = 0;
+        if (_overflowY) _y = 0;
 
         _styles = new CssStyle()
             .Set("--x", $"{_x:0}px")

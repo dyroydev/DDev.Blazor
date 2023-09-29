@@ -34,14 +34,47 @@ export function setFocusToLastChild(reference) {
     setFocus(getFocusableChildren(element).shift());
 }
 
+export function setFocusToNext(reference) {
+    let element = findElement(reference);
+    while (element) {
+        element = element.nextElementSibling
+        if (isFocusable(element)) {
+            setFocus(element)
+            return true
+        }
+    }
+    return false
+}
+
+export function setFocusToPrevious(reference) {
+    let element = findElement(reference);
+    while (element) {
+        element = element.previousElementSibling
+        if (isFocusable(element)) {
+            setFocus(element)
+            return true
+        }
+    }
+    return false
+}
+
 /**
  * Gets all focusable children of element in order.
  * @param {HTMLElement} element
  */
 function getFocusableChildren(element) {
     if (!element) return [];
-    const pattern = `a, button, input, textarea, select, dialog, details, iframe, embed, object, summary, audio[controls], video[controls], [tabindex='0'], [contenteditable]`;
-    const matches = [...element.querySelectorAll(pattern)];
-    return matches.filter(e => !e.hasAttribute("disabled") && !e.hasAttribute("hidden") && !e.hasAttribute("inert"));
+    const matches = [...element.querySelectorAll(FOCUSABLE_PATTERN)];
+    return matches.filter(isFocusEnabled);
 
 }
+
+function isFocusable(element) {
+    return element && element.matches(FOCUSABLE_PATTERN) && isFocusEnabled(element)
+}
+
+function isFocusEnabled(focusableElement) {
+    return focusableElement && !focusableElement.hasAttribute("disabled") && !focusableElement.hasAttribute("hidden") && !focusableElement.hasAttribute("inert")
+}
+
+const FOCUSABLE_PATTERN = `a, button, input, textarea, select, dialog, details, iframe, embed, object, summary, audio[controls], video[controls], [tabindex='0'], [contenteditable]`;
