@@ -24,18 +24,9 @@ public static class ServiceCollectionExtensions
     {
         return services
             .AddScoped<PortalRegistry>()
-            .AddScoped<DDevTools>()
             .AddScoped<BackdropStack>()
             .AddScoped<IKeyBindingsFactory, KeyBindingsFactoryInternal>()
-            .AddTransient<IKeyBindings>(sp => sp.GetRequiredService<IKeyBindingsFactory>().ForDocument())
-            .AddDDevBlazorTool<IMessageBox, MessageBoxInternal>();
-    }
-
-    /// <summary>
-    /// Adds a internal tool to the service collection. The tool must be made available from within <see cref="Components.DDevBlazor"/>.
-    /// </summary>
-    private static IServiceCollection AddDDevBlazorTool<TService, TImplementation>(this IServiceCollection services) where TImplementation : TService where TService : class
-    {
-        return services.AddScoped<TService>(sp => sp.GetRequiredService<DDevTools>().Get<TImplementation>());
+            .AddScoped<IMessageBox, MessageBox>()
+            .AddScoped<TaskCompletionSource<MessageBoxComponent>>();
     }
 }

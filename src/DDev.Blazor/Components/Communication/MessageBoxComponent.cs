@@ -1,8 +1,9 @@
-﻿using DDev.Blazor.Services;
+﻿namespace DDev.Blazor.Components.Communication;
 
-namespace DDev.Blazor.Components.Communication;
-
-internal class MessageBoxInternal : ComponentBase, IMessageBox
+/// <summary>
+/// The component responsible for displaying message boxes.
+/// </summary>
+internal sealed class MessageBoxComponent : ComponentBase
 {
     private Dialog? _dialog;
     private string? _title;
@@ -13,7 +14,24 @@ internal class MessageBoxInternal : ComponentBase, IMessageBox
     private string? _dismiss;
     private string? _dismissIcon;
 
-    private Task<bool> ShowAsync(RenderFragment<Dialog> statement, string? title, string? icon, string? confirm, string? confirmIcon, string? dismiss, string? dismissIcon)
+    /// <summary>
+    /// Shows the message box with the given parameters.
+    /// </summary>
+    /// <remarks>This method is thread safe.</remarks>
+    /// <returns><see langword="true"/> if the user clicked the confirming action. Otherwise <see langword="false"/>.</returns>
+    public async Task<bool> ShowAsyncThreadSafe(RenderFragment<Dialog> statement, string? title, string? icon, string? confirm, string? confirmIcon, string? dismiss, string? dismissIcon)
+    {
+        var result = false;
+        await InvokeAsync(async () => result = await ShowAsync(statement, title, icon, confirm, confirmIcon, dismiss, dismissIcon));
+        return result;
+    }
+
+    /// <summary>
+    /// Shows the message box with the given parameters.
+    /// </summary>
+    /// <remarks>This method can ONLY be invoked on the UI-thread.</remarks>
+    /// <returns><see langword="true"/> if the user clicked the confirming action. Otherwise <see langword="false"/>.</returns>
+    public Task<bool> ShowAsync(RenderFragment<Dialog> statement, string? title, string? icon, string? confirm, string? confirmIcon, string? dismiss, string? dismissIcon)
     {
         _dialog?.Close();
         _title = title;
@@ -105,15 +123,5 @@ internal class MessageBoxInternal : ComponentBase, IMessageBox
     private void HandleDismiss()
     {
         _dialog?.CloseWithResult(false);
-    }
-
-    public Task AlertAsync(RenderFragment statement, string? title = null, string? icon = null, string confirm = "Ok", string? confirmIcon = null)
-    {
-        return ShowAsync(_ => statement, title, icon, confirm, confirmIcon, dismiss:null, dismissIcon:null);
-    }
-
-    public Task<bool> ConfirmAsync(RenderFragment statement, string? title = null, string? icon = null, string confirm = "Confirm", string? confirmIcon = null, string dismiss = "Dismiss", string? dismissIcon = null)
-    {
-        return ShowAsync(_ => statement, title, icon, confirm, confirmIcon, dismiss, dismissIcon);
     }
 }

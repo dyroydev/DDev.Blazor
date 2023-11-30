@@ -1,4 +1,4 @@
-﻿using DDev.Blazor.Internal;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace DDev.Blazor.Components;
 
@@ -7,17 +7,19 @@ namespace DDev.Blazor.Components;
 /// </summary>
 public partial class DDevBlazor
 {
-    [Inject] DDevTools Tools { get; set; } = null!;
+    [Inject] IServiceProvider Services { get; set; } = null!;
 
     /// <summary>
     /// Renders an internal component.
     /// </summary>
     private RenderFragment AddTool<T>() where T : IComponent
     {
+        var taskSource = Services.GetRequiredService<TaskCompletionSource<T>>();
+
         return builder =>
         {
             builder.OpenComponent<T>(0);
-            builder.AddComponentReferenceCapture(1, tool => Tools.Register(tool));
+            builder.AddComponentReferenceCapture(1, tool => taskSource.TrySetResult((T)tool));
             builder.CloseComponent();
         };
     }
