@@ -3,7 +3,7 @@
 /// <summary>
 /// A field for <see cref="string"/> values. (multiple lines)
 /// </summary>
-public partial class TextAreaField
+public partial class TextArea
 {
     /// <summary>
     /// The placeholder contains hints for what a input should look like.

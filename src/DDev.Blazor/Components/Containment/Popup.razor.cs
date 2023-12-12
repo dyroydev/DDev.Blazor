@@ -1,6 +1,4 @@
-﻿using DDev.Blazor.Services;
-
-namespace DDev.Blazor.Components.Containment;
+﻿namespace DDev.Blazor.Components.Containment;
 
 /// <summary>
 /// Defines a popup surface.
@@ -98,11 +96,9 @@ public partial class Popup : IDisposable
         if (_overflowX) _x = 0;
         if (_overflowY) _y = 0;
 
-        _styles = new CssStyle()
-            .Set("--x", $"{_x:0}px")
-            .Set("--y", $"{_y:0}px")
-            .Set("min-width", $"{placement.Width}px", PlacementWidth)
-            .ToString();
+        _styles = $"--x:{_x:0}px; --y:{_y:0}px";
+        if (PlacementWidth)
+            _styles += $"; min-width:{placement.Width}px";
 
         _isVisible = true;
         StateHasChanged();

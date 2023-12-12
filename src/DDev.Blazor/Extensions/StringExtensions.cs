@@ -3,7 +3,7 @@
 namespace DDev.Blazor.Extensions;
 
 /// <summary>
-/// Usefull extension for <see cref="string"/>.
+/// Useful extension for <see cref="string"/>.
 /// </summary>
 public static class StringExtensions
 {

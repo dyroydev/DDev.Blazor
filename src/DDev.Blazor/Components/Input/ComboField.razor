@@ -1,0 +1,10 @@
+@typeparam T
+@inherits FieldBase<T>
+
+<FieldTemplate Label="@Label" ValueId="@Id" Disabled="@Disabled" Invalid="IsFieldInvalid" Empty="string.IsNullOrEmpty(_valueAsString)" ForceFocused="_popup is { IsVisible:true }">
+    <input disabled="@Disabled" autocomplete="off" id="@Id" @bind="_valueAsString" @bind:event="oninput" @bind:after="HandleValueAsStringChanged" @onfocus="HandleFocus" @onblur="HandleBlur" />
+</FieldTemplate>
+
+<PopupMenu @ref="_popup" PlacementWidth>
+    <OptionSource T="T" Source="_candidates" ChildContent="ChildContent!" OnClick="SetValueAsync" />
+</PopupMenu>

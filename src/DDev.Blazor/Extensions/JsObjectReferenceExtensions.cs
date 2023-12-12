@@ -13,26 +13,14 @@ internal static class JsObjectReferenceExtensions
         return new DisposableJsObjectReference(jsObject);
     }
 
-    private class DisposableJsObjectReference : IDisposable, IAsyncDisposable
+    private class DisposableJsObjectReference(IJSObjectReference jsObject) : IDisposable, IAsyncDisposable
     {
-        private readonly IJSObjectReference _jsObject;
         private bool _disposed;
 
-        public DisposableJsObjectReference(IJSObjectReference jsObject)
+        public void Dispose()
         {
-            _jsObject = jsObject;
-        }
-
-        public async void Dispose()
-        {
-            try
-            {
-                await DisposeAsync();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Failed to dispose object: {ex.GetType().Name}/{ex.Message}");
-            }
+            DisposeAsync().AsTask()
+                .Discard(ex => Console.WriteLine($"Failed to dispose object: {ex.GetType().Name}/{ex.Message}"));
         }
 
         public async ValueTask DisposeAsync()
@@ -44,11 +32,11 @@ internal static class JsObjectReferenceExtensions
 
             try
             {
-                await _jsObject.InvokeVoidAsync("dispose");
+                await jsObject.InvokeVoidAsync("dispose");
             }
             finally
             {
-                await _jsObject.DisposeAsync();
+                await jsObject.DisposeAsync();
             }
         }
     }

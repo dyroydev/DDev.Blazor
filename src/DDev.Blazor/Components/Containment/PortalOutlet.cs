@@ -16,7 +16,7 @@ public sealed class PortalOutlet : ComponentBase, IDisposable
 
     [Inject] private PortalRegistry Portals { get; set; } = null!;
 
-    internal List<PortalSource> Sources { get; } = new();
+    internal List<PortalSource> Sources { get; } = [];
 
     private string _initialName = "";
 

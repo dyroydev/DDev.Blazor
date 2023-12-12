@@ -30,7 +30,10 @@ public abstract class FieldBase<T> : ComponentBase, IDisposable
     /// Current value of field.
     /// </summary>
     #pragma warning disable BL0007
-    [Parameter] public T? Value { get => _value; set => SetValueAsync(value).Discard("Failed to set Value"); }
+    [Parameter] public T? Value
+    {
+        get => _value; 
+        set => InvokeSafe(() => SetValueAsync(value)); }
     #pragma warning restore BL0007
 
     /// <summary>
@@ -128,6 +131,23 @@ public abstract class FieldBase<T> : ComponentBase, IDisposable
         await (OnValueChangedAsync() ?? Task.CompletedTask);
         StateHasChanged();
         await ValueChanged.InvokeAsync(_value);
+    }
+
+    /// <summary>
+    /// Immediately invokes <paramref name="action"/> and delegates exceptions to the components dispatcher.
+    /// </summary>
+    /// <remarks>This method assumes its being invoked from the components dispatcher.</remarks>
+    /// <param name="action"></param>
+    private async void InvokeSafe(Func<Task> action)
+    {
+        try
+        {
+            await action();
+        }
+        catch (Exception exception)
+        {
+            await DispatchExceptionAsync(exception);
+        }
     }
 
     /// <summary>

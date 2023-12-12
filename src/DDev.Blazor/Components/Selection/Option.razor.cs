@@ -57,8 +57,6 @@ public partial class Option : IDisposable
     /// </summary>
     [CascadingParameter] private Menu? Menu { get; set; }
 
-    [Inject] private IJSRuntime Js { get; set; } = null!;
-
     /// <summary>
     /// If <see langword="true"/>, the options is rendered as selected.
     /// </summary>
