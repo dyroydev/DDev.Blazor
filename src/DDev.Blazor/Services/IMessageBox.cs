@@ -1,7 +1,7 @@
 ﻿namespace DDev.Blazor.Services;
 
 /// <summary>
-/// Can show simple premade commonly used dialogs for alerting and confirming.
+/// Can show alert and confirm dialogs too the user.
 /// </summary>
 public interface IMessageBox
 {

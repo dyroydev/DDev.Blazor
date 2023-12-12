@@ -3,7 +3,7 @@
 /// <summary>
 /// The component responsible for displaying message boxes.
 /// </summary>
-internal sealed class MessageBoxComponent : ComponentBase
+internal sealed class MessageBoxProvider : ComponentBase
 {
     private Dialog? _dialog;
     private string? _title;
@@ -49,7 +49,7 @@ internal sealed class MessageBoxComponent : ComponentBase
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
         builder.OpenComponent<Dialog>(0);
-        builder.AddAttribute(2, nameof(Dialog.Dismissable), true);
+        builder.AddAttribute(2, nameof(Dialog.Dismissible), true);
         builder.AddAttribute(3, nameof(Dialog.Content), _statement);
 
         if (string.IsNullOrWhiteSpace(_title) is false ||

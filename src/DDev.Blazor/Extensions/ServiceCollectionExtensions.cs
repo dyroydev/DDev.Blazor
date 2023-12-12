@@ -15,9 +15,10 @@ public static class ServiceCollectionExtensions
     /// <remarks>
     /// The following services will be available:
     /// <list type="bullet">
+    /// <item><see cref="ILocalStorage"/> (Scoped)</item>
+    /// <item><see cref="ISessionStorage"/> (Scoped)</item>
     /// <item><see cref="IMessageBox"/> (Scoped)</item>
     /// <item><see cref="IKeyBindingsFactory"/> (Scoped)</item>
-    /// <item><see cref="IKeyBindings"/> (Transient, must be disposed after use)</item>
     /// </list>
     /// </remarks>
     public static IServiceCollection AddDDevBlazor(this IServiceCollection services)
@@ -27,6 +28,8 @@ public static class ServiceCollectionExtensions
             .AddScoped<BackdropStack>()
             .AddScoped<IKeyBindingsFactory, KeyBindingsFactoryInternal>()
             .AddScoped<IMessageBox, MessageBox>()
-            .AddScoped<TaskCompletionSource<MessageBoxComponent>>();
+            .AddScoped<ILocalStorage, LocalStorage>()
+            .AddScoped<ISessionStorage, SessionStorage>()
+            .AddScoped<TaskCompletionSource<MessageBoxProvider>>();
     }
 }

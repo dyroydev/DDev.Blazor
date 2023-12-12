@@ -1,6 +1,6 @@
 ﻿namespace DDev.Blazor.Services;
 
-internal class MessageBox(TaskCompletionSource<MessageBoxComponent> messageBoxTask) : IMessageBox
+internal class MessageBox(TaskCompletionSource<MessageBoxProvider> messageBoxTask) : IMessageBox
 {
     public async Task AlertAsync(RenderFragment statement, string? title = null, string? icon = null, string? confirm = "Ok", string? confirmIcon = null)
     {
