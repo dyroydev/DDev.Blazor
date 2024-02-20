@@ -19,6 +19,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{AD97
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherApp", "..\Samples\WeatherApp\WeatherApp.csproj", "{79264DC2-DA59-4E96-A9C0-93D8D7B8F822}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Actions", "Actions", "{6E020EB7-D4EF-4518-8F23-2B8B0D43B373}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\publish.yml = ..\.github\workflows\publish.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
