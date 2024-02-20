@@ -1,0 +1,72 @@
+﻿@page "/weather/{Latitude:double}/{Longitude:double}"
+@page "/weather/{Latitude:double}/{Longitude:double}/{Name}"
+
+<h1>Weather at @(Name ?? $"{Latitude}°N {Longitude}°E")</h1>
+
+@if (_isFavorite)
+{
+    <Button OnClick="() => FavoritesService.RemoveFavorite(_location)">Remove favorite</Button>
+}
+else
+{
+    <Button OnClick="() => FavoritesService.AddFavorite(_location)">Add favorite</Button>
+}
+
+<QuickGrid TGridItem="DailyWeather" Items="_dailyWeather">
+    <PropertyColumn Title="Date" Property="x => x.Date" Format="dddd dd" />
+    <TemplateColumn Title="Temperature" >
+        <NumericValue Value="@context.MinTemperature" NegativeStyle="color: deepskyblue" PositiveStyle="color: red" Unit="@context.TemperatureUnit" />
+        to
+        <NumericValue Value="@context.MaxTemperature" NegativeStyle="color: deepskyblue" PositiveStyle="color: red" Unit="@context.TemperatureUnit" />
+    </TemplateColumn>
+    <PropertyColumn Title="Sunrise" Property="x => x.Sunrise" />
+    <PropertyColumn Title="Sunset" Property="x => x.Sunset" />
+</QuickGrid>
+
+@inject FavoriteLocationsService FavoritesService;
+@inject IWeatherClient WeatherClient;
+@implements IDisposable
+@code {
+    [Parameter] public double Longitude { get; set; }
+    [Parameter] public double Latitude { get; set; }
+    [Parameter] public string? Name { get; set; }
+    private Location? _location;
+    private bool _isFavorite;
+
+    private IQueryable<DailyWeather> _dailyWeather = new List<DailyWeather>().AsQueryable();
+
+    protected override void OnInitialized()
+    {
+        FavoritesService.Changed += OnFavoritesChanged;
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _location = new Location
+        {
+            Latitude = Latitude,
+            Longitude = Longitude,
+            Name = Name ?? ""
+        };
+
+        _isFavorite = await FavoritesService.IsFavorite(_location);
+
+        var forecast = await WeatherClient.GetDailyWeatherAsync(_location);
+
+        _dailyWeather = forecast.AsQueryable();
+    }
+
+    private async void OnFavoritesChanged()
+    {
+        if (_location is null)
+            return;
+
+        _isFavorite = await FavoritesService.IsFavorite(_location);
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        FavoritesService.Changed -= OnFavoritesChanged;
+    }
+}

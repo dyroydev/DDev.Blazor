@@ -3,7 +3,7 @@
 namespace DDev.Blazor.Extensions;
 
 /// <summary>
-/// Usefull extensions for date-objects when working with schedules.
+/// Useful extensions for date-objects when working with schedules.
 /// </summary>
 public static class DateExtensions
 {

@@ -38,7 +38,7 @@ public partial class Menu
     /// <summary>
     /// A set containing all options within the menu.
     /// </summary>
-    /// <remarks>The set does not gurranty correct or stable order.</remarks>
+    /// <remarks>The set does not guarantee correct or stable order.</remarks>
     public IReadOnlySet<Option> Options => InternalOptions;
 
     internal HashSet<Option> InternalOptions { get; } = new();

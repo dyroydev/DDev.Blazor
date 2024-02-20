@@ -13,7 +13,7 @@ public partial class Avatar
     [Parameter] public object? Id { get; set; }
 
     /// <summary>
-    /// Name of the item represented by the avarat. (Used to make tooltip and initials).
+    /// Name of the item represented by the avatar. (Used to make tooltip and initials).
     /// </summary>
     [Parameter] public string? Name { get; set; }
 

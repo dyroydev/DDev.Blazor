@@ -33,7 +33,7 @@ public partial class Dialog
     /// <summary>
     /// If <see langword="true"/>, the dialog can be closed by clicking the backdrop.
     /// </summary>
-    [Parameter] public bool Dismissable { get; set; }
+    [Parameter] public bool Dismissible { get; set; }
 
     [Inject] private IJSRuntime Js { get; set; } = null!;
 
@@ -68,6 +68,7 @@ public partial class Dialog
         _source = new TaskCompletionSource<object?>();
         await _backdrop.OpenAsync();
 
+        // Give backdrop time to render
         await Task.Yield();
 
         await HandleFocusOutBottom();
@@ -75,8 +76,7 @@ public partial class Dialog
         try
         {
             StateHasChanged();
-            var result = await _source.Task;
-            return result is T tRestult ? tRestult : default;
+            return await _source.Task is T result ? result : default;
         }
         finally
         {
@@ -114,7 +114,7 @@ public partial class Dialog
 
     private void HandleBackdropClick()
     {
-        if (Dismissable)
+        if (Dismissible)
             Close();
     }
 }

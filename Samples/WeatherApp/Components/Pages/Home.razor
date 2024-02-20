@@ -1,0 +1,25 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<h1>Find a location</h1>
+<p>Currently, only Norwegian cities are supported.</p>
+
+<SearchField AutoSearch OnSearch="FindLocations" Label="Find a location" MinSearchLength="3" />
+@if (_searchResults is { Count: > 0 })
+{
+    <Menu>
+        <OptionSource T="Location" Source="_searchResults" OnClick="@(location => Nav.NavigateTo(location.Url))">
+            @context.Name <span>@context.Latitude, @context.Longitude</span>
+        </OptionSource>
+    </Menu>
+}
+
+@inject NavigationManager Nav;
+@inject ILocationClient LocationClient;
+@code {
+    List<Location> _searchResults = [];
+
+    private async Task FindLocations(SearchFieldArgs args)
+        => _searchResults = await LocationClient.SearchCitiesAsync(args.Text);
+}

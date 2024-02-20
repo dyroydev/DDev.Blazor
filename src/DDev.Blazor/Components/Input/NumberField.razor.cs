@@ -8,7 +8,7 @@ namespace DDev.Blazor.Components.Input;
 /// <typeparam name="T">Numeric type of value.</typeparam>
 /// <seealso cref="DateField"/>
 /// <seealso cref="SelectField{T}"/>
-/// <seealso cref="TextAreaField"/>
+/// <seealso cref="TextArea"/>
 /// <seealso cref="TextField"/>
 public partial class NumberField<T> where T : INumber<T>, IMinMaxValue<T>
 {
