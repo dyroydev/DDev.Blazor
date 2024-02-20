@@ -23,7 +23,7 @@ public partial class SearchField : IDisposable
     /// <summary>
     /// Callback invoked when the user wants to search.
     /// </summary>
-    [Parameter] public EventCallback<string> OnSearch { get; set; }
+    [Parameter] public EventCallback<SearchFieldArgs> OnSearch { get; set; }
 
     /// <summary>
     /// Callback invoked when the user wants to navigate the result list.
@@ -42,7 +42,9 @@ public partial class SearchField : IDisposable
 
     [Inject] private IKeyBindingsFactory KeyBinds { get; set; } = default!;
 
-    private readonly Timer _searchTimer = new();
+    private readonly Timer _searchTimer = new() { AutoReset = false, Interval = 60_000 / (AssumedWordsPerMinute * AssumedAverageWordLength) };
+    private CancellationTokenSource? _cancelTokenSource;
+    private string _previousSearchAttempt = "";
 
     /// <inheritdoc />
     protected override void OnValueChanged()
@@ -50,7 +52,6 @@ public partial class SearchField : IDisposable
         if (AutoSearch)
         {
             _searchTimer.Stop();
-            _searchTimer.Interval = 60_000 / (AssumedWordsPerMinute * AssumedAverageWordLength);
             _searchTimer.Start();
         }
     }
@@ -59,8 +60,8 @@ public partial class SearchField : IDisposable
     protected override void OnInitialized()
     {
         Use(_searchTimer).Elapsed += OnTimerElapsed;
-        Use(KeyBinds.ForElement(Id))
-            .On("Enter", () => Search())
+        Use(KeyBinds.Create(Id))
+            .On("Enter", () => TrySearch())
             .On("ArrowDown", () => OnTryFocusFirstResult.InvokeAsync());
     }
 
@@ -74,7 +75,7 @@ public partial class SearchField : IDisposable
     {
         try
         {
-            await InvokeAsync(Search);
+            await InvokeAsync(TrySearch);
         }
         catch (Exception exception)
         {
@@ -82,13 +83,43 @@ public partial class SearchField : IDisposable
         }
     }
 
-    private async Task Search()
+    private async Task TrySearch()
     {
         var value = Value ?? "";
+
+        if (string.Equals(value, _previousSearchAttempt))
+            return;
+
+        _previousSearchAttempt = value;
 
         if (value.Length < MinSearchLength)
             return;
 
-       await OnSearch.InvokeAsync(value);
+
+        _cancelTokenSource?.Cancel();
+        _cancelTokenSource?.Dispose();
+        _cancelTokenSource = new CancellationTokenSource();
+
+       await OnSearch.InvokeAsync(new ()
+       {
+           Text = value,
+           CancellationToken = _cancelTokenSource.Token
+       });
     }
+}
+
+/// <summary>
+/// Search arguments from a <see cref="SearchField"/>.
+/// </summary>
+public class SearchFieldArgs
+{
+    /// <summary>
+    /// The text value that was searched.
+    /// </summary>
+    public required string Text { get; set; }
+
+    /// <summary>
+    /// Token that is cancelled when a new search is made.
+    /// </summary>
+    public required CancellationToken CancellationToken { get; set; }
 }

@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Repository", "Repository", "{601738E2-1BF9-4011-8D6A-BB4C2DCF3B76}"
 	ProjectSection(SolutionItems) = preProject
 		..\.gitignore = ..\.gitignore
+		..\license.txt = ..\license.txt
 		..\readme.md = ..\readme.md
 	EndProjectSection
 EndProject
@@ -16,7 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{AD97
 		..\Samples\readme.md = ..\Samples\readme.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherApp", "..\Samples\WeatherApp\WeatherApp.csproj", "{79264DC2-DA59-4E96-A9C0-93D8D7B8F822}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherApp", "..\Samples\WeatherApp\WeatherApp.csproj", "{79264DC2-DA59-4E96-A9C0-93D8D7B8F822}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

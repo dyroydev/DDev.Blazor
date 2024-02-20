@@ -1,4 +1,5 @@
-﻿using DDev.Blazor.Internal;
+﻿using DDev.Blazor.Components;
+using DDev.Blazor.Internal;
 using DDev.Blazor.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -26,10 +27,11 @@ public static class ServiceCollectionExtensions
         return services
             .AddScoped<PortalRegistry>()
             .AddScoped<BackdropStack>()
-            .AddScoped<IKeyBindingsFactory, KeyBindingsFactoryInternal>()
+            .AddScoped<IKeyBindingsFactory, KeyBindingsFactory>()
             .AddScoped<IMessageBox, MessageBox>()
             .AddScoped<ILocalStorage, LocalStorage>()
             .AddScoped<ISessionStorage, SessionStorage>()
-            .AddScoped<TaskCompletionSource<MessageBoxProvider>>();
+            .AddScoped<TaskCompletionSource<MessageBoxProvider>>()
+            .AddKeyedScoped<TaskCompletionSource>(nameof(DDevBlazor));
     }
 }

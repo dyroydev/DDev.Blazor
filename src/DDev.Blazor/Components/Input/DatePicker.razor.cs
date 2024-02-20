@@ -205,14 +205,14 @@ public partial class DatePicker
         _keyBinds.ForEach(x => x.Dispose());
         _keyBinds.Clear();
 
-        _keyBinds.Add(KeyBinds.ForElement(Id)
+        _keyBinds.Add(KeyBinds.Create(Id)
             .On("Delete", () => SetValueAsync(null))
             .On("Home", ModifierKey.Shift, () => FocusAsync(_today)));
 
         for (var i = 0; i < _dayCount; i++)
         {
             var date = _startDay.AddDays(i);
-            var keyBinds = KeyBinds.ForElement(GetDateId(date))
+            var keyBinds = KeyBinds.Create(GetDateId(date))
                 .On("ArrowUp", () => FocusAsync(date.AddDays(-7)))
                 .On("ArrowDown", () => FocusAsync(date.AddDays(7)))
                 .On("ArrowLeft", () => FocusAsync(date.AddDays(-1)))
@@ -234,7 +234,7 @@ public partial class DatePicker
         for (var i = 0; i < _monthCount; i++)
         {
             var date = _startDay.AddMonths(i);
-            var keyBinds = KeyBinds.ForElement(GetMonthId(date))
+            var keyBinds = KeyBinds.Create(GetMonthId(date))
                 .On("ArrowUp", () => Js.FocusAsync(GetMonthId(date.AddMonths(-3))))
                 .On("ArrowDown", () => Js.FocusAsync(GetMonthId(date.AddMonths(3))))
                 .On("ArrowLeft", () => Js.FocusAsync(GetMonthId(date.AddMonths(-1))))
@@ -248,7 +248,7 @@ public partial class DatePicker
         for (var i = 0; i < _yearCount; i++)
         {
             var date = _startDay.AddYears(i);
-            var keyBinds = KeyBinds.ForElement(GetYearId(date))
+            var keyBinds = KeyBinds.Create(GetYearId(date))
                 .On("ArrowUp", () => Js.FocusAsync(GetYearId(date.AddYears(-3))))
                 .On("ArrowDown", () => Js.FocusAsync(GetYearId(date.AddYears(3))))
                 .On("ArrowLeft", () => Js.FocusAsync(GetYearId(date.AddYears(-1))))

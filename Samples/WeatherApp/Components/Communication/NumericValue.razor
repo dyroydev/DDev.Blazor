@@ -1,0 +1,31 @@
+﻿<span class="numeric @SignClass" style="@SignStyle">
+    <span class="numeric__value">@Value</span>
+    @if (string.IsNullOrWhiteSpace(Unit) is false)
+    {
+        <span class="numeric__unit">@Unit</span>
+    }
+</span>
+
+@code {
+    [Parameter, EditorRequired] public object Value { get; set; } = 0;
+
+    [Parameter] public string? Unit { get; set; }
+
+    [Parameter] public string? PositiveStyle { get; set; }
+
+    [Parameter] public string? NegativeStyle { get; set; } = "color: red;";
+
+    string? SignStyle => IsPositive ? PositiveStyle : NegativeStyle;
+
+    string SignClass => IsPositive ? "numeric--positive" : "numeric--negative";
+
+    bool IsPositive => 
+        Value is double _double ? _double >= 0 : 
+        Value is float _float ? _float >= 0 :
+        Value is decimal _decimal ? _decimal >= 0 :
+        Value is int _int ? _int >= 0 :
+        Value is long _long ? _long >= 0 :
+        Value is short _short ? _short >= 0 :
+        true;
+
+}

@@ -1,13 +1,20 @@
 ﻿namespace DDev.Blazor.Services;
 
-internal sealed class LocalStorage(IJSRuntime js) : BrowserStorage(js, "localStorage"), ILocalStorage
-{
-}
+/// <summary>
+/// <see cref="BrowserStorage"/> extension for local storage.
+/// </summary>
+internal sealed class LocalStorage(IJSRuntime js) : BrowserStorage(js, "localStorage"), ILocalStorage;
 
-internal sealed class SessionStorage(IJSRuntime js) : BrowserStorage(js, "sessionStorage"), ISessionStorage
-{
-}
+/// <summary>
+/// <see cref="BrowserStorage"/> extension for session storage.
+/// </summary>
+internal sealed class SessionStorage(IJSRuntime js) : BrowserStorage(js, "sessionStorage"), ISessionStorage;
 
+/// <summary>
+/// Wraps the browser's storage API.
+/// </summary>
+/// <param name="js"></param>
+/// <param name="provider">Name of the browser storage property. One of <c>localStorage</c> or <c>sessionStorage</c></param>
 internal abstract class BrowserStorage(IJSRuntime js, string provider) : IBrowserStorage
 {
     public async Task ClearAsync(CancellationToken cancellationToken = default)

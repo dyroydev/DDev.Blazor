@@ -76,7 +76,7 @@ public partial class Dialog
         try
         {
             StateHasChanged();
-            return (T?)await _source.Task;
+            return await _source.Task is T result ? result : default;
         }
         finally
         {

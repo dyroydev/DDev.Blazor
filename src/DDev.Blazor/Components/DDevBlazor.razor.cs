@@ -9,6 +9,15 @@ public partial class DDevBlazor
 {
     [Inject] IServiceProvider Services { get; set; } = null!;
 
+    /// <inheritdoc />
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Services.GetRequiredKeyedService<TaskCompletionSource>("DDevBlazor").TrySetResult();
+        }
+    }
+
     /// <summary>
     /// Renders an internal component.
     /// </summary>

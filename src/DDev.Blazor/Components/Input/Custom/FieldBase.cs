@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
+﻿using DDev.Blazor.Internal;
+using Microsoft.AspNetCore.Components.Forms;
 using System.Diagnostics;
 using System.Linq.Expressions;
 
@@ -62,7 +63,7 @@ public abstract class FieldBase<T> : ComponentBase, IDisposable
     /// <remarks>Always <see langword="false"/> if <see cref="EditContext"/> is <see langword="null"/>.</remarks>
     protected bool IsFieldInvalid { get; private set; }
 
-    private readonly List<IDisposable> _disposables = new();
+    private readonly ComposedDisposable _disposable = new();
     private EditContext? _editContext;
     private T? _value;
 
@@ -104,13 +105,13 @@ public abstract class FieldBase<T> : ComponentBase, IDisposable
     }
 
     /// <summary>
-    /// Automatically disposes <paramref name="utility"/> when the component is disposed.
+    /// If <paramref name="utility"/> implements <see cref="IDisposable"/> or <see cref="IAsyncDisposable"/>, it will be disposed when this component is disposed.
     /// </summary>
-    /// <typeparam name="TUtility">Type of utility.</typeparam>
-    /// <returns><paramref name="utility"/>.</returns>
-    protected TUtility Use<TUtility>(TUtility utility) where TUtility : IDisposable
+    /// <typeparam name="TUtility">Type of utility service.</typeparam>
+    /// <param name="utility">The utility owned by the component.</param>
+    protected TUtility Use<TUtility>(TUtility utility)
     {
-        _disposables.Add(utility);
+        _disposable.AddIfDisposable(utility);
         return utility;
     }
 
@@ -156,8 +157,7 @@ public abstract class FieldBase<T> : ComponentBase, IDisposable
     public void Dispose()
     {
         SetEditContext(null);
-        foreach (var disposable in _disposables)
-            disposable.Dispose();
+        _disposable.Dispose();
         Dispose(true);
         GC.SuppressFinalize(this);
     }

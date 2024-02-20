@@ -1,0 +1,79 @@
+﻿@inherits LayoutComponentBase
+@implements IDisposable
+
+<div class="page">
+
+    <nav>
+        @if (_favorites.Count > 0)
+        {
+                <h2>Favorites</h2>
+                <Menu>
+                    <OptionSource T="Location" 
+                        Source="_favorites" 
+                        HintIcon="@(_ => "remove")"
+                        OnClick="@(loc => NavigationManager.NavigateTo($"/weather/{loc.Latitude.ToString(CultureInfo.InvariantCulture)}/{loc.Longitude.ToString(CultureInfo.InvariantCulture)}/{loc.Name}"))"
+                        OnClickHint="TryRemoveFavorite">
+                        @context.Name
+                    </OptionSource>
+                </Menu>
+        }
+    </nav>
+
+    <main>
+        @Body
+    </main>
+</div>
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+
+@inject IMessageBox MB;
+@inject NavigationManager NavigationManager;
+@inject FavoriteLocationsService FavoritesService;
+@code {
+    IReadOnlyList<Location> _favorites = [];
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadFavorites();
+            FavoritesService.Changed += HandleFavoritesChanged;
+        }
+    }
+
+    async void HandleFavoritesChanged()
+    {
+        try
+        {
+            await InvokeAsync(LoadFavorites);
+        }
+        catch (Exception exception)
+        {
+            await DispatchExceptionAsync(exception);
+        }
+    }
+
+    async Task LoadFavorites()
+    {
+        _favorites = await FavoritesService.GetFavoriteLocations();
+        StateHasChanged();
+    }
+
+    async Task TryRemoveFavorite(Location location)
+    {
+        if (await MB.ConfirmAsync($"Delete {location.Name}?"))
+        {
+            await FavoritesService.RemoveFavorite(location);
+            await LoadFavorites();
+        }
+    }
+
+    public void Dispose()
+    {
+        FavoritesService.Changed += HandleFavoritesChanged;
+    }
+}

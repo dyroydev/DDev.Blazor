@@ -15,7 +15,7 @@ public partial class TimeField
 
     [Inject] IKeyBindingsFactory KeyBinds { get; set; } = null!;
 
-    private string Separator => CultureInfo.CurrentCulture.DateTimeFormat.TimeSeparator;
+    private static string Separator => CultureInfo.CurrentCulture.DateTimeFormat.TimeSeparator;
     private string HourId => Id + "_hour";
     private string MinuteId => Id + "_minute";
     private string SecondId => Id + "_second";
@@ -32,19 +32,19 @@ public partial class TimeField
     /// <inheritdoc />
     protected override void OnInitialized()
     {
-        Use(KeyBinds.ForElement(HourId))
+        Use(KeyBinds.Create(HourId))
             .On("ArrowUp", () => SetValueAsync((Value ?? TimeOnly.MinValue).AddHours(1)))
             .On("ArrowDown", () => SetValueAsync((Value ?? TimeOnly.MinValue).AddHours(-1)))
             .On("ArrowLeft", () => NoSeconds ? FocusMinuteAsync() : FocusSecondAsync())
             .On("ArrowRight", () => FocusMinuteAsync());
 
-        Use(KeyBinds.ForElement(MinuteId))
+        Use(KeyBinds.Create(MinuteId))
             .On("ArrowUp", () => SetValueAsync((Value ?? TimeOnly.MinValue).AddMinutes(1)))
             .On("ArrowDown", () => SetValueAsync((Value ?? TimeOnly.MinValue).AddMinutes(-1)))
             .On("ArrowLeft", () => FocusHourAsync())
             .On("ArrowRight", () => NoSeconds ? FocusHourAsync() : FocusSecondAsync());
 
-        Use(KeyBinds.ForElement(SecondId))
+        Use(KeyBinds.Create(SecondId))
             .On("ArrowUp", () => SetValueAsync((Value ?? TimeOnly.MinValue).Add(TimeSpan.FromSeconds(1))))
             .On("ArrowDown", () => SetValueAsync((Value ?? TimeOnly.MinValue).Add(TimeSpan.FromSeconds(-1))))
             .On("ArrowLeft", () => FocusMinuteAsync())

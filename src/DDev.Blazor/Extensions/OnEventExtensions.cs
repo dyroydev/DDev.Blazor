@@ -3,7 +3,7 @@
 /// <summary>
 /// Extensions method for the <see cref="IJSRuntime"/> to subscribe to document events.
 /// </summary>
-public static class JsRuntimeEventExtensions
+public static class OnEventExtensions
 {
     /// <summary>
     /// Invoke <paramref name="handler"/> every time the document raises an event with name <paramref name="eventName"/>.
@@ -66,6 +66,12 @@ public static class JsRuntimeEventExtensions
     /// </summary>
     public static async Task<IDisposable> OnEvent<T>(this IJSRuntime js, string eventName, string? reference, Func<T, Task> handler)
     {
+        if (string.IsNullOrWhiteSpace(eventName))
+            throw new ArgumentException("Event name cannot be null or empty.", nameof(eventName));
+
+        if (handler is null)
+            throw new ArgumentNullException(nameof(handler));
+
         var subscription = new JsEventSubscription<T>(handler);
 
         var listener = await js.InvokeDDevAsync<IJSObjectReference>("events", "createListener", eventName, reference);
